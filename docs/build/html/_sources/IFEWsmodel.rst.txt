@@ -28,7 +28,7 @@ Follow the below steps for installation:
 .. toctree::
    :maxdepth: 3
 
-   data
+   input_data
    subsystem
    sellarmda
    
