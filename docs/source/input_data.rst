@@ -3,12 +3,13 @@ Input Data
 ====================
 
 The OpenMDAO model requires several geospatial datasets that serve as inputs to the various subsystems. The three subsystem datasets are:
-have number points in sphinx
+
 * Weather
 * Agriculture
 * Animal Agriculture
 
 Additionally, two more datasets are required for the visualization tools that are provided with the model:
+
 * County Geographic dataset
 * FIPS (Federal Information Processing Standards) Geospatial dataset
 
@@ -27,12 +28,12 @@ The OpenMDAO model requires monthly data for the following variables:
 
 .. _PRISM Climate Group: https://prism.oregonstate.edu/
 
-* Precipitation in inches
-* Mean temperature in |deg|F
+* Precipitation in :math:`inches`
+* Mean temperature in :math:`\deg F`
 
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Agriculture & Animal Agriculture
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The agriculture & animal agriculture data are both acquired from the `National Agricultural Statistics Service`_ from the USDA. Using the Quick Stats tool you can choose the variables of interest from both the crop and animal sectors. You can also choose the geopgraphic level of data and its timespan.
 The OpenMDAO model requires monthly data for the following variables:
@@ -42,11 +43,11 @@ The OpenMDAO model requires monthly data for the following variables:
 """"""""""""""""""""
 Agriculture
 """"""""""""""""""""
-* Rate of commercial nitrogen fixation in :math:`N \dot kg / ha`
-* Area of corn planted in acres
-* Area of soybean planted in acres
-* Area of corn harvested in acres
-* Area of soybean harvested in acres
+* Rate of commercial nitrogen fixation in :math:`N \cdot kg / ha`
+* Area of corn planted in :math:`acres`
+* Area of soybean planted in :math:`acres`
+* Area of corn harvested in :math:`acres`
+* Area of soybean harvested in :math:`acres`
 
 """"""""""""""""""""
 Animal Agriculture

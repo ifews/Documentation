@@ -7,7 +7,6 @@
   <title>Input Data &mdash; IFEWs 1.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -91,14 +90,17 @@
              
   <section id="input-data">
 <h1>Input Data<a class="headerlink" href="#input-data" title="Permalink to this heading">¶</a></h1>
-<p>The OpenMDAO model requires several geospatial datasets that serve as inputs to the various subsystems. The three subsystem datasets are:
-have number points in sphinx
-* Weather
-* Agriculture
-* Animal Agriculture</p>
-<p>Additionally, two more datasets are required for the visualization tools that are provided with the model:
-* County Geographic dataset
-* FIPS (Federal Information Processing Standards) Geospatial dataset</p>
+<p>The OpenMDAO model requires several geospatial datasets that serve as inputs to the various subsystems. The three subsystem datasets are:</p>
+<ul class="simple">
+<li><p>Weather</p></li>
+<li><p>Agriculture</p></li>
+<li><p>Animal Agriculture</p></li>
+</ul>
+<p>Additionally, two more datasets are required for the visualization tools that are provided with the model:</p>
+<ul class="simple">
+<li><p>County Geographic dataset</p></li>
+<li><p>FIPS (Federal Information Processing Standards) Geospatial dataset</p></li>
+</ul>
 <section id="data-source">
 <h2>Data Source<a class="headerlink" href="#data-source" title="Permalink to this heading">¶</a></h2>
 <p>All the datasets are provided and presorted as needed by the model. However, it is helpful to know the source of the data when tuning the model.</p>
@@ -107,8 +109,8 @@ have number points in sphinx
 <p>The weather data is acquired from the <a class="reference external" href="https://prism.oregonstate.edu/">PRISM Climate Group</a> Database. They gathers climate observations from a wide range of monitoring networks and develop geospatial climate datasets. To get data from multiple locations, a csv file with the latitude and longitudinal coordinates must be inputted, which is provided.
 The OpenMDAO model requires monthly data for the following variables:</p>
 <ul class="simple">
-<li><p>Precipitation in inches</p></li>
-<li><p>Mean temperature in <a href="#id1"><span class="problematic" id="id2">|</span></a>deg|F</p></li>
+<li><p>Precipitation in <span class="math notranslate nohighlight">\(inches\)</span></p></li>
+<li><p>Mean temperature in <span class="math notranslate nohighlight">\(\deg F\)</span></p></li>
 </ul>
 </section>
 <section id="agriculture-animal-agriculture">
@@ -118,11 +120,11 @@ The OpenMDAO model requires monthly data for the following variables:</p>
 <section id="agriculture">
 <h4>Agriculture<a class="headerlink" href="#agriculture" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
-<li><p>Rate of commercial nitrogen fixation in <span class="math notranslate nohighlight">\(N \dot kg / ha\)</span></p></li>
-<li><p>Area of corn planted in acres</p></li>
-<li><p>Area of soybean planted in acres</p></li>
-<li><p>Area of corn harvested in acres</p></li>
-<li><p>Area of soybean harvested in acres</p></li>
+<li><p>Rate of commercial nitrogen fixation in <span class="math notranslate nohighlight">\(N \cdot kg / ha\)</span></p></li>
+<li><p>Area of corn planted in <span class="math notranslate nohighlight">\(acres\)</span></p></li>
+<li><p>Area of soybean planted in <span class="math notranslate nohighlight">\(acres\)</span></p></li>
+<li><p>Area of corn harvested in <span class="math notranslate nohighlight">\(acres\)</span></p></li>
+<li><p>Area of soybean harvested in <span class="math notranslate nohighlight">\(acres\)</span></p></li>
 </ul>
 </section>
 <section id="animal-agriculture">
