@@ -57,13 +57,12 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="IFEWsmodel.html">IFEWs Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_data.html">Getting data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_data.html">Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_components.html">Model Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sellarmda.html">Sellar MDA</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="visualization.html">Application</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="user_reference.html">User Reference</a></li>
 </ul>
 
         </div>
@@ -116,12 +115,12 @@
 </dl>
 </li>
 </ul>
-<a class="reference internal image-reference" href="figures/openmdao4.png"><img alt="Alternative text" src="figures/openmdao4.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="_images/openmdao4.png"><img alt="Alternative text" src="_images/openmdao4.png" style="width: 400px;" /></a>
 <ul class="simple">
 <li><p>In OpenMDAO, calculations are carried out inside a Component, which is the smallest unit of computation understood by the framework. Each Component produces its own set of variables. OpenMDAO provides different types of Components for various calculations.</p></li>
 </ul>
 <p>In order to understand the different kinds of components in OpenMDAO, let us consider the following numerical model that takes <code class="docutils literal notranslate"><span class="pre">x</span></code> as an input:</p>
-<a class="reference internal image-reference" href="figures/openmdao1.png"><img alt="Alternative text" src="figures/openmdao1.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="_images/openmdao1.png"><img alt="Alternative text" src="_images/openmdao1.png" style="width: 400px;" /></a>
 <ul class="simple">
 <li><dl class="simple">
 <dt>In our numerical model, we have three variables: <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, and <code class="docutils literal notranslate"><span class="pre">z</span></code>. Each of these variables needs to be defined as the output of a component. There are three basic types of components in OpenMDAO:</dt><dd><ul>
@@ -134,12 +133,12 @@
 </li>
 <li><p>The most straightforward way to implement the numerical model would be to assign each variable its own component, as below.</p></li>
 </ul>
-<a class="reference internal image-reference" href="figures/openmdao2.png"><img alt="Alternative text" src="figures/openmdao2.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="_images/openmdao2.png"><img alt="Alternative text" src="_images/openmdao2.png" style="width: 400px;" /></a>
 <ul class="simple">
 <li><p>Another way that is also valid would be to have one component compute both <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code> explicitly.</p></li>
 </ul>
 <p>It would mean that this component solves the implicit equation for <code class="docutils literal notranslate"><span class="pre">y</span></code> internally.</p>
-<a class="reference internal image-reference" href="figures/openmdao3.png"><img alt="Alternative text" src="figures/openmdao3.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="_images/openmdao3.png"><img alt="Alternative text" src="_images/openmdao3.png" style="width: 400px;" /></a>
 <ul class="simple">
 <li><p>Add how to setup input &amp; output, define a component, run the script, sellar, etc. (refer to Basic User Guides)</p></li>
 </ul>
@@ -154,7 +153,7 @@
 </li>
 <li><p>LinearRegression fits a linear model with coefficients w = (w1, …, wp) to minimize the residual sum of squares between the observed targets in the dataset, and the targets predicted by the linear approximation.</p></li>
 </ul>
-<a class="reference internal image-reference" href="figures/scikit1.png"><img alt="Alternative text" src="figures/scikit1.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="_images/scikit1.png"><img alt="Alternative text" src="_images/scikit1.png" style="width: 400px;" /></a>
 <ul class="simple">
 <li><dl class="simple">
 <dt>Parameters:</dt><dd><ul>

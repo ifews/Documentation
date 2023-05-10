@@ -6,7 +6,7 @@ After you have successfully set up requirements and examined the fundamental gui
 .. toctree::
    :maxdepth: 3
 
-   data
-   subsystem
+   input_data
+   model_components
    sellarmda
    
