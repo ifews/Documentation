@@ -8,6 +8,7 @@
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="canonical" href="https://pjt359100.github.io/sphinx_example/requirements.html" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -20,7 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="IFEWs Model" href="IFEWsmodel.html" />
+    <link rel="next" title="Prerequisite Learning" href="prerequisite.html" />
     <link rel="prev" title="Installation" href="install.html" /> 
 </head>
 
@@ -44,14 +45,21 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="install.html">Installation</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prerequisite.html">Prerequisite Learning</a></li>
 </ul>
 </li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="IFEWsmodel.html">IFEWs Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_data.html">Getting data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Application</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_reference.html">User Reference</a></li>
 </ul>
 
         </div>
@@ -80,13 +88,29 @@
            <div itemprop="articleBody">
              
   <section id="requirements">
-<h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading">¶</a></h1>
-<p>Follow the below steps for installation:</p>
-<ul class="simple">
-<li><p>OpenMDAO</p></li>
-<li><p>numpy</p></li>
-<li><p>panda</p></li>
+<h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h1>
+<dl class="simple">
+<dt>-IFEWs model depends external packages to do multidisciplinary analysis and optimization (MDAO). The following packages are required to download:</dt><dd><ul class="simple">
+<li><p>Numpy</p></li>
+<li><p>Pandas</p></li>
+<li><p>Openmdao</p></li>
+<li><p>Sklearn</p></li>
 </ul>
+</dd>
+</dl>
+<p>-Installation instructions:
+You can simply download the requirements by using pip from yout python environment (we recommend Anaconda):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">numpy</span>
+
+<span class="n">pip</span> <span class="n">install</span> <span class="s1">&#39;openmdao[all]&#39;</span>
+
+<span class="n">pip</span> <span class="n">install</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span>
+</pre></div>
+</div>
+<p><strong>Note</strong>
+To ensure the installation of optional dependencies, use the [all] suffix with the install command. However, it is not necessary for a basic installation.</p>
+<p><strong>Note</strong>
+Numpy will be automatically installed along with scikit-learn because numpy is one of the dependencies.</p>
 </section>
 
 
@@ -94,7 +118,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="IFEWsmodel.html" class="btn btn-neutral float-right" title="IFEWs Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="prerequisite.html" class="btn btn-neutral float-right" title="Prerequisite Learning" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
