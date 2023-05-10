@@ -29,6 +29,6 @@ Follow the below steps for installation:
    :maxdepth: 3
 
    input_data
-   subsystem
+   model_components
    sellarmda
    
