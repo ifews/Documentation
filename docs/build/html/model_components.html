@@ -18,9 +18,12 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Sellar MDA" href="sellarmda.html" />
+    <link rel="prev" title="Input Data" href="input_data.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,15 +48,24 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 </ul>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="IFEWsmodel.html">IFEWs Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_data.html">Getting data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_data.html">Input Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Model Components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subsystems">Subsystems</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#weather">Weather</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#agriculture">Agriculture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethanol-production">Ethanol Production</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#animal-agriculture">Animal Agriculture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nitrogen-surplus">Nitrogen Surplus</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sellarmda.html">Sellar MDA</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="visualization.html">Application</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="user_reference.html">User Reference</a></li>
 </ul>
 
         </div>
@@ -70,6 +82,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="IFEWsmodel.html">IFEWs Model</a></li>
       <li class="breadcrumb-item active">Model Components</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/model_components.rst.txt" rel="nofollow"> View page source</a>
@@ -82,40 +95,64 @@
              
   <section id="model-components">
 <h1>Model Components<a class="headerlink" href="#model-components" title="Permalink to this heading"></a></h1>
-<p>Using the OpenMDAO framework, the multidisciplinary IFEWs model can be decomposed into a series of smaller interconnected components. These components are defined by their inputs and outputs.</p>
+<p>Using the OpenMDAO framework, the multidisciplinary IFEWs model can be decomposed into a series of smaller interconnected components. These components are defined by their inputs/outputs and relation to other components.</p>
 <section id="subsystems">
 <h2>Subsystems<a class="headerlink" href="#subsystems" title="Permalink to this heading"></a></h2>
+<p>The IFEW nexus model contains 5 integrated subsystems including Weather, Agriculture, Animal Agriculture, Energy, and Water. The first three subsystems have been fully implemented. The energy subsystem will model the production of ethanol and biodiesel, they do no contribute to the nitrogen surplus but are directly related to the crop data. The water subsystem has not been implemented yet.</p>
 <section id="weather">
 <h3>Weather<a class="headerlink" href="#weather" title="Permalink to this heading"></a></h3>
-<p>First subsystem</p>
+<p>The weather subsystem uses the inputted weather data and correlates it with a linear regression equation of past data to estimate the crop yield. The regression equation is based on past annual weather and crop data for the state of Iowa.</p>
 </section>
 <section id="agriculture">
 <h3>Agriculture<a class="headerlink" href="#agriculture" title="Permalink to this heading"></a></h3>
-<p>Second subsystem</p>
+<p>The agriculture subsystem uses the inputted crop data and the computed crop yield from the weather subsystem to calculate the grain nitrogen (GN), fixed nitrogen (FN), and commercial nitrogen (CN). These outsputs are portions of the total nitrogen surplus and are defined as follows:</p>
+<ul>
+<li><p>FN - Nitrogen fixed by the planted soybean crop</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(FN = (81.1 \cdot  (y_s \cdot \frac{67.2511}{1000}) - 98.5) \cdot \frac{A_{soy}}{A}\)</span> <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+</div></blockquote>
+</li>
+<li><p>GN - Nitrogen present in the harvested grain</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(GN = ((y_c \cdot 67.2511) \cdot (1.18/100) \cdot AH_{corn} + (y_s \cdot 67.2511) \cdot (\frac{6.4}{100}) \cdot AH_{soy})/AH\)</span> <a class="footnote-reference brackets" href="#f1" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+</div></blockquote>
+</li>
+<li><p>CN - Nitrogen inputted from the fertilizer application rate of commercial nitrogen</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(CN = RCN_{corn}\)</span> <a class="footnote-reference brackets" href="#f2" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+</div></blockquote>
+</li>
+</ul>
+<p>The computed nitrogen components are in <span class="math notranslate nohighlight">\(\frac{N \cot kg}{ha}\)</span></p>
 </section>
 <section id="ethanol-production">
 <h3>Ethanol Production<a class="headerlink" href="#ethanol-production" title="Permalink to this heading"></a></h3>
-<p>Third subsystem</p>
+<p>The ethanol susbsytem is a subset for the energy production facet of the IFEWs model. The computed corn yield and agricultural inputs data are used to estimate the production of ethanol from a regression equation.</p>
+<p><span class="math notranslate nohighlight">\(P_{EtOH} = 0.02 \cdot y_c \cdot A_{corn} \cdot \frac{1.827}{1000}  \cdot (1000 \cdot 42)\)</span> <a class="footnote-reference brackets" href="#f2" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
 </section>
 <section id="animal-agriculture">
 <h3>Animal Agriculture<a class="headerlink" href="#animal-agriculture" title="Permalink to this heading"></a></h3>
-<p>4th subsystem</p>
+<p>The animal agriculture subsystem uses the inputted animal and crop data to compute the manure nitrogen (MN) <a class="footnote-reference brackets" href="#f1" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. The nitrogen fixated in the soil by animal manure is first calculated individually by cattle type as follows</p>
+<p><span class="math notranslate nohighlight">\(N_{Total_{Cattle}} = Cattle_{Beef} \cdot N_{Beef} \cdot lf_{Beef} + Cattle_{Milk} \cdot N_{Milk} \cdot lf_{Milk} +  \frac{Cattle_{Other} \cdot N_{HS} \cdot lf_{HS} + Cattle_{Other} \cdot N_{Slught_{Cattle}} \cdot lf_{Slught_{Cattle}}}{2}\)</span></p>
+<p><span class="math notranslate nohighlight">\(N_{Total_{Hog}} = Hog \cdot N_{Hog} \cdot lf_{Hog}\)</span></p>
+<p>It is then summed to compute the total nitrogen fixated in the soil by animal manure.</p>
+<p><span class="math notranslate nohighlight">\(MN = \frac{N_{Total_{Cattle}} + N_{Total_{Hog}}}{A}\)</span></p>
 </section>
 <section id="nitrogen-surplus">
 <h3>Nitrogen Surplus<a class="headerlink" href="#nitrogen-surplus" title="Permalink to this heading"></a></h3>
-<p>5th subsystem</p>
-</section>
-<section id="demand-corn">
-<h3>Demand Corn<a class="headerlink" href="#demand-corn" title="Permalink to this heading"></a></h3>
-<p>1st constraints</p>
-</section>
-<section id="demand-ethanol">
-<h3>Demand Ethanol<a class="headerlink" href="#demand-ethanol" title="Permalink to this heading"></a></h3>
-<p>2st constraints</p>
-</section>
-<section id="demand-fp">
-<h3>Demand FP<a class="headerlink" href="#demand-fp" title="Permalink to this heading"></a></h3>
-<p>3rd constraints</p>
+<p>The nitrogen surplus subsystems summates the computed nitrogen components calculated from the other components to compute the total nitrogen surplus.</p>
+<p><span class="math notranslate nohighlight">\(N_{surplus} = CN  + MN + FN - GN\)</span> <a class="footnote-reference brackets" href="#f1" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<p class="rubric">References</p>
+<aside class="footnote brackets" id="f1" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id5">3</a>,<a role="doc-backlink" href="#id6">4</a>)</span>
+<p>Raul, V., Leifsson, L., Kaleita, A. System Modeling and Sensitivity Analysis of the Iowa Food-Water-Energy Nexus. Journal of Environmental Informatics Letters, p. 73-79, jan. 2021. <a class="reference external" href="https://doi.org/10.3808/jeil.202000044">https://doi.org/10.3808/jeil.202000044</a></p>
+</aside>
+<aside class="footnote brackets" id="f2" role="note">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id4">2</a>)</span>
+<p>(PLACEHOLDER) Julia’s presentation.</p>
+</aside>
 </section>
 </section>
 </section>
@@ -123,7 +160,10 @@
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="input_data.html" class="btn btn-neutral float-left" title="Input Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sellarmda.html" class="btn btn-neutral float-right" title="Sellar MDA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

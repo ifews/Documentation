@@ -22,7 +22,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Contour Plot" href="contour_plot.html" />
-    <link rel="prev" title="Accessing ouput" href="accessing_output.html" /> 
+    <link rel="prev" title="Sellar MDA" href="sellarmda.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,17 +49,20 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="IFEWsmodel.html">IFEWs Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_data.html">Getting data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_data.html">Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_components.html">Model Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sellarmda.html">Sellar MDA</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Application</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contour_plot.html">Contour Plot</a></li>
-<li class="toctree-l2"><a class="reference internal" href="making_color_map.html">Color Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plotting-tool">Plotting Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choropleth-map-tool">Choropleth Map Tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contour_plot.html">Contour Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making_color_map.html">Color Map</a></li>
 </ul>
 </li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="user_reference.html">User Reference</a></li>
+</li>
 </ul>
 
         </div>
@@ -88,7 +91,20 @@
              
   <section id="application">
 <h1>Application<a class="headerlink" href="#application" title="Permalink to this heading"></a></h1>
-<p>Once you generate and access the output, you can visualize it to various formats with following methods:</p>
+<p>Once you can run the model and generate the output, we have two scripts that post-process and analyze the output with visualizations. The tools are coded in Jupyter Notebook and the code blocks are executed in series. Additonal pthon packages required by the tools are listed at the top and can be found in counda-forge. Both tools load the output file from the model and make visualizations based on that output variables, which are:</p>
+<ul class="simple">
+<li><p>Nitrogen Surplus</p></li>
+<li><p>Corn Yield</p></li>
+<li><p>Soybean Yield</p></li>
+<li><p>Ethanol Production</p></li>
+</ul>
+<section id="plotting-tool">
+<h2>Plotting Tool<a class="headerlink" href="#plotting-tool" title="Permalink to this heading"></a></h2>
+<p>This tool generates the validation plot for the Energy subsystem using EIA data of ethanol produced in Iowa and compares it with the modelled production of Ethanol. Additionally, the tool also generates an interactive widget, which can plot the time series of variables outputted by the model for a specific county. The widget includes all 99 counties of Iowa and can plot all the modelled output variables.</p>
+</section>
+<section id="choropleth-map-tool">
+<h2>Choropleth Map Tool<a class="headerlink" href="#choropleth-map-tool" title="Permalink to this heading"></a></h2>
+<p>This tool generates choropleth maps, which is a type of statistical thematic map that uses pseudocolor to visualize the modelled data geographically. The plot is made by an interactive widgets with inputs for the desired year and can plot all the output variables. Additionally, the tool can also save the maps for all variables as a set of images to generate a time series GIF.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contour_plot.html">Contour Plot</a></li>
@@ -96,12 +112,13 @@
 </ul>
 </div>
 </section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="accessing_output.html" class="btn btn-neutral float-left" title="Accessing ouput" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="sellarmda.html" class="btn btn-neutral float-left" title="Sellar MDA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="contour_plot.html" class="btn btn-neutral float-right" title="Contour Plot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
