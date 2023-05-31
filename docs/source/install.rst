@@ -3,9 +3,9 @@ Installation
 
 To use IFEWs model, you must first install Python3. 
 
-In case you prefer convenient access to the source code and examples, you have the option to install IFEWs model through cloning the ifews/Documentation repository::
+In case you prefer convenient access to the source code and examples, you have the option to install IFEWs model through cloning the ifews/Multidisciplinary-Model::
 
-    git clone https://github.com/ifews/Documentation.git
+    git clone https://github.com/ifews/Multidisciplinary-Model.git
 
 Then, open the terminal and ``cd`` into the downloaded repository and pip install the package::
 
