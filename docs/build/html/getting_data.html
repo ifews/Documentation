@@ -1,96 +1,48 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Getting data &mdash; IFEWs 1.0.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="canonical" href="https://pjt359100.github.io/sphinx_example/getting_data.html" />
-
-  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Application" href="visualization.html" />
-    <link rel="prev" title="Sellar MDA" href="sellarmda.html" /> 
+    <link rel="prev" title="Output Data" href="output_data.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="index.html" class="icon icon-home"> IFEWs
           
-
-          
+          <a href="index.html" class="icon icon-home">
+            IFEWs
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Tutorial.html">Tutorial</a></li>
@@ -112,77 +64,36 @@
 <li class="toctree-l1"><a class="reference internal" href="user_reference.html">Additional Reference</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">IFEWs</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
-      <li>Getting data</li>
-    
-    
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting data</li>
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/getting_data.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <section id="getting-data">
-<h1>Getting data<a class="headerlink" href="#getting-data" title="Permalink to this heading">¶</a></h1>
+<h1>Getting data<a class="headerlink" href="#getting-data" title="Permalink to this heading"></a></h1>
 <p>This script executes the <code class="docutils literal notranslate"><span class="pre">IFEWs</span> <span class="pre">model</span></code> analysis by processing a series of inputs extracted from an Excel file.
 It employs the <code class="docutils literal notranslate"><span class="pre">IFEWs_model_v3_2</span></code> for this purpose.</p>
 <section id="importing-requirements">
-<h2>Importing requirements<a class="headerlink" href="#importing-requirements" title="Permalink to this heading">¶</a></h2>
+<h2>Importing requirements<a class="headerlink" href="#importing-requirements" title="Permalink to this heading"></a></h2>
 <p>You can simply import external packages and function by using <code class="docutils literal notranslate"><span class="pre">import</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
@@ -198,7 +109,7 @@ The filename may be modified following any updates to the model.</p>
 </div>
 </section>
 <section id="loading-data">
-<h2>Loading data<a class="headerlink" href="#loading-data" title="Permalink to this heading">¶</a></h2>
+<h2>Loading data<a class="headerlink" href="#loading-data" title="Permalink to this heading"></a></h2>
 <p>The first step involves setting and loading values that are used to initialize the <code class="docutils literal notranslate"><span class="pre">IFEWs</span> <span class="pre">model</span></code>. The Excel file from which data is loaded can be modified to account for different data of interest.</p>
 <p>Here, we import data from two Excel files: one containing weather data and the other containing animal agriculture data. The weather data encompasses monthly data for each county from 1997 to 2019. For the animal agriculture, we possess annual data per county for the same time span.</p>
 <p>The following piece of code offers an example:</p>
@@ -260,7 +171,7 @@ The filename may be modified following any updates to the model.</p>
 </div>
 </section>
 <section id="generating-output">
-<h2>Generating output<a class="headerlink" href="#generating-output" title="Permalink to this heading">¶</a></h2>
+<h2>Generating output<a class="headerlink" href="#generating-output" title="Permalink to this heading"></a></h2>
 <p>We’ve loaded monthly data for 99 counties over a 23-year period, resulting in a total of 2,277 data points for each variable. In this instance, we’ve classified animal data as <code class="docutils literal notranslate"><span class="pre">x</span></code>, weather data as <code class="docutils literal notranslate"><span class="pre">w</span></code>, and agriculture data as <code class="docutils literal notranslate"><span class="pre">e</span></code>.</p>
 <p>Subsequently, we call the IFEW function for each set of grouped input data and log the output data of interest.
 In this case, we’ve recorded the <code class="docutils literal notranslate"><span class="pre">Nitrogen</span> <span class="pre">Surplus</span></code>, <code class="docutils literal notranslate"><span class="pre">Corn</span> <span class="pre">Yield</span></code>, <code class="docutils literal notranslate"><span class="pre">Soybean</span> <span class="pre">Yield</span></code>, and <code class="docutils literal notranslate"><span class="pre">Ethanol</span> <span class="pre">Production</span></code> in a csv file <code class="docutils literal notranslate"><span class="pre">Results.csv</span></code>:</p>
@@ -289,7 +200,7 @@ In this case, we’ve recorded the <code class="docutils literal notranslate"><s
 </div>
 </section>
 <section id="assessing-output">
-<h2>Assessing output<a class="headerlink" href="#assessing-output" title="Permalink to this heading">¶</a></h2>
+<h2>Assessing output<a class="headerlink" href="#assessing-output" title="Permalink to this heading"></a></h2>
 <p>The csv file, named <code class="docutils literal notranslate"><span class="pre">Results.csv</span></code> as pre-determined, contains the 2,777 data points for each output variable that you’ve recorded. The rows in the file are arranged in alphabetical order and by year, ascending from 1997 to 2019.</p>
 <p>For instance, the first 23 rows hold data for the <code class="docutils literal notranslate"><span class="pre">Adair</span></code> county spanning from 1997 to 2019, and the final 23 rows contain data from the <code class="docutils literal notranslate"><span class="pre">Wright</span></code> county for the same time period.</p>
 </section>
@@ -297,50 +208,33 @@ In this case, we’ve recorded the <code class="docutils literal notranslate"><s
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="output_data.html" class="btn btn-neutral float-left" title="Output Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="visualization.html" class="btn btn-neutral float-right" title="Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="sellarmda.html" class="btn btn-neutral float-left" title="Sellar MDA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2023, CODE Lab.
-
-    </p>
+    <p>&#169; Copyright 2023, CODE Lab.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
