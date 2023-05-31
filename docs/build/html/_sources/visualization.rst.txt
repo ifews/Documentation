@@ -1,4 +1,4 @@
-Application
+Visualization
 ============
 
 Once you can run the model and generate the output, we have two scripts that post-process and analyze the output with visualizations.

@@ -51,7 +51,7 @@ After you have successfully set up the requirements and examined the fundamental
    getting_data
 
 
-Visualization
+Data Analysis
 ==================================================
 Once you generate and acceess the output, you can visualize it to various formats with following methods:
 
