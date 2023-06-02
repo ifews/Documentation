@@ -99,7 +99,7 @@ In this case, we've recorded the ``Nitrogen Surplus``, ``Corn Yield``, ``Soybean
 			df_AA.at[i, "CornGrainAcresHarvested"] = (AH_corn.iloc[i - 1] + AH_corn.iloc[i - 2]) / 2
 		if pd.isna(AH_soy.iloc[i]) == True:
 			df_AA.at[i, "SoybeansAcresHarvested"] = (AH_soy.iloc[i - 1] + AH_soy.iloc[i - 2]) / 2
-					
+
 		x = [RCN_c.iloc[i], A_corn.iloc[i], A_soy.iloc[i], AH_corn.iloc[i], AH_soy.iloc[i], cattle_H.iloc[i], cattle_B.iloc[i], cattle_M.iloc[i], cattle_O.iloc[i]] 
 		w = [May_P, T_July.iloc[i], PPT_July.iloc[i], PPT_July.iloc[i] ** 2, PPT_June.iloc[i]]
 	    
@@ -127,6 +127,6 @@ In this case, we've recorded the ``Nitrogen Surplus``, ``Corn Yield``, ``Soybean
 
 Assessing output
 ------------------
-The csv file, named ``Results.csv`` as pre-determined, contains the 2,777 data points for each output variable that you've recorded. The rows in the file are arranged in alphabetical order and by year, ascending from 1997 to 2019.
+The csv file, named ``Results.csv`` as pre-determined, contains the 2,277 data points for each output variable that you've recorded. The rows in the file are arranged in alphabetical order and by year, ascending from 1997 to 2019.
 
 For instance, the first 23 rows hold data for the ``Adair`` county spanning from 1997 to 2019, and the final 23 rows contain data from the ``Wright`` county for the same time period.
