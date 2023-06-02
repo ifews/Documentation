@@ -1,8 +1,7 @@
 Getting data
 ========================
 
-This script executes the ``IFEWs model`` analysis by processing a series of inputs extracted from an Excel file. 
-It employs the ``IFEWs_model_v3_2`` for this purpose.
+The ``batch_analysis.py script`` executes the ``IFEWs_model.py`` analysis by processing a series of inputs extracted from an Excel file. 
 
 
 Importing requirements 
@@ -13,11 +12,11 @@ You can simply import external packages and function by using ``import``::
 	
 	import math
 
-	from IFEWs_model_v3_2 import IFEW
+	from IFEWs_model import *
 
 .. note::
 
-   ``IFEWs_model_v3_2`` is the newest version of the ``IFEWs model``. 
+   ``IFEWs_model`` is the latest stable version of the IFEWs model. 
    The filename may be modified following any updates to the model. 
    
 
@@ -32,17 +31,15 @@ The following piece of code offers an example::
 
 	# Constants
 	May_P = 80 # May planting progress averaged at 80%  for 2009 - 2019
-	RCN_c = 185  # Sawyer(2018) Avg (155-215)
-	RCN_s = 17 # Avg = 17.7 kg/ha std = 4.8kg/ha based on the fertilizer use and price data between 2008-2018 (USDA, 2019)
 
-	# Read CSV Files
+	## Read CSV Files
 
-	# Load Weather data
-	loc_W = 'weather_data/PRISM_199701_201912_sorted.csv' # Weather dataframe
+	# Load Weather data -----------
+	loc_W = 'Data_Input/weather_data/PRISM_199701_201912_sorted.csv' # Weather dataframe
 	df_W = pd.read_csv(loc_W)
 
-	# Load Animal Agriculture data
-	loc_AA = 'animal_agriculture_data/IFEW_Counties_1997_2019.csv'
+	# Load Animal Agriculture data -----------
+	loc_AA = 'Data_Input/animal_agriculture_data/IFEW_Counties_1997_2019.csv'
 	df_AA = pd.read_csv(loc_AA) # Animal Agricultural dataframe
 
 	# Parse Weather Data
@@ -50,37 +47,33 @@ The following piece of code offers an example::
 	PPT_June = df_W['ppt (inches)'][(df_W['Month']==6)]
 	PPT_July = df_W['ppt (inches)'][(df_W['Month']==7)]
 
-	# Parse Animal Data
-	cattle_B = df_AA["BeefCows"]
-	cattle_M = df_AA["MilkCows"]                
-	cattle_H = df_AA["Hogs"]
-	cattle_O = df_AA["OtherCattle"]	
-	
 	# Parse Agricultural Data
-	A_soy = df_AA["SoybeansAcresPlanted"]
-	AH_soy = df_AA["SoybeansAcresHarvested"] 
+	RCN_c = df_AA["CommercialN_kg_ha"]
 	A_corn = df_AA["CornAcresPlanted"]
-	AH_corn = df_AA["CornGrainAcresHarvested"]	
+	A_soy = df_AA["SoybeansAcresPlanted"]
+	AH_corn = df_AA["CornGrainAcresHarvested"]
+	AH_soy = df_AA["SoybeansAcresHarvested"]
+
+	# Parse Animal Agricultural Data
+	cattle_B = df_AA["BeefCows"]
+	cattle_M = df_AA["MilkCows"]
+	cattle_H = df_AA["Hogs"]
+	cattle_O = df_AA["OtherCattle"]
 
 
 The subsequent step is data preprocessing. In this case, there are instances of missing ``A_corn``, ``A_soy``, ``AH_corn``, and ``AH_soy`` data for certain counties across some years. To avoid gaps in our data of interest, we address these missing entries by using the average of the data from the two preceding years::
 
-	# Fill up the missing data in csv file
-	for i in range(len(A_corn)): 
-	    if(math.isnan(A_corn[i])):
-	        A_corn[i] = (A_corn[i-1] + A_corn[i-2]) / 2
-	        
-	for i in range(len(AH_corn)): 
-	    if(math.isnan(AH_corn[i])):
-	        AH_corn[i] = (AH_corn[i-1] + AH_corn[i-2]) / 2
-	        
-	for i in range(len(A_soy)): 
-	    if(math.isnan(A_soy[i])):
-	        A_soy[i] = (A_soy[i-1] + A_soy[i-2]) / 2
-	        
-	for i in range(len(AH_soy)): 
-	    if(math.isnan(AH_soy[i])):
-	        AH_soy[i] = (AH_soy[i-1] + AH_soy[i-2]) / 2
+    # Checks for missing data and replaces it with the average of the previous two entries
+    if pd.isna(RCN_c.iloc[i]) == True:
+        df_AA.at[i, "CommercialN_kg_ha"] = (RCN_c.iloc[i - 1] + RCN_c.iloc[i - 2]) / 2
+    if pd.isna(A_corn.iloc[i]) == True:
+        df_AA.at[i, "CornAcresPlanted"] = (A_corn.iloc[i - 1] + A_corn.iloc[i - 2]) / 2
+    if pd.isna(A_soy.iloc[i]) == True:
+        df_AA.at[i, "SoybeansAcresPlanted"] = (A_soy.iloc[i - 1] + A_soy.iloc[i - 2]) / 2
+    if pd.isna(AH_corn.iloc[i]) == True:
+        df_AA.at[i, "CornGrainAcresHarvested"] = (AH_corn.iloc[i - 1] + AH_corn.iloc[i - 2]) / 2
+    if pd.isna(AH_soy.iloc[i]) == True:
+        df_AA.at[i, "SoybeansAcresHarvested"] = (AH_soy.iloc[i - 1] + AH_soy.iloc[i - 2]) / 2
 
 .. note::
 
@@ -95,26 +88,41 @@ Subsequently, we call the IFEW function for each set of grouped input data and l
 In this case, we've recorded the ``Nitrogen Surplus``, ``Corn Yield``, ``Soybean Yield``, and ``Ethanol Production`` in a csv file ``Results.csv``::
 
 	for i in range(len(df_AA)): 	
-	    x = [RCN_c, RCN_s, cattle_H.iloc[i], cattle_B.iloc[i], cattle_M.iloc[i], cattle_O.iloc[i]
-	    w = [May_P, T_July.iloc[i], PPT_July.iloc[i], PPT_July.iloc[i] ** 2, PPT_June.iloc[i]]
-	    e = [A_corn.iloc[i], AH_corn.iloc[i], A_soy.iloc[i], AH_soy.iloc[i]]
+		# Checks for missing data and replaces it with the average of the previous two entries
+		if pd.isna(RCN_c.iloc[i]) == True:
+			df_AA.at[i, "CommercialN_kg_ha"] = (RCN_c.iloc[i - 1] + RCN_c.iloc[i - 2]) / 2
+		if pd.isna(A_corn.iloc[i]) == True:
+			df_AA.at[i, "CornAcresPlanted"] = (A_corn.iloc[i - 1] + A_corn.iloc[i - 2]) / 2
+		if pd.isna(A_soy.iloc[i]) == True:
+			df_AA.at[i, "SoybeansAcresPlanted"] = (A_soy.iloc[i - 1] + A_soy.iloc[i - 2]) / 2
+		if pd.isna(AH_corn.iloc[i]) == True:
+			df_AA.at[i, "CornGrainAcresHarvested"] = (AH_corn.iloc[i - 1] + AH_corn.iloc[i - 2]) / 2
+		if pd.isna(AH_soy.iloc[i]) == True:
+			df_AA.at[i, "SoybeansAcresHarvested"] = (AH_soy.iloc[i - 1] + AH_soy.iloc[i - 2]) / 2
+					
+		x = [RCN_c.iloc[i], A_corn.iloc[i], A_soy.iloc[i], AH_corn.iloc[i], AH_soy.iloc[i], cattle_H.iloc[i], cattle_B.iloc[i], cattle_M.iloc[i], cattle_O.iloc[i]] 
+		w = [May_P, T_July.iloc[i], PPT_July.iloc[i], PPT_July.iloc[i] ** 2, PPT_June.iloc[i]]
 	    
-	    raw_results = IFEW(x, w, e, False)
-	    
-	    if i == 0:
-	        ns_data = [raw_results[0]]
-        	yc_data = [raw_results[1]]
-        	ys_data = [raw_results[2]]
-        	P_EtOH_data = [raw_results[7]]
-        	
-	    else:   	 
-	        ns_data =  ns_data + [raw_results[0]]
-	        yc_data =  yc_data + [raw_results[1]]
-	        ys_data =  ys_data + [raw_results[2]]
-	        P_EtOH_data = P_EtOH_data + [raw_results[7]]
+		raw_results = IFEW(x, w, False)
+		
+		if i == 0:
+			ns_data = [raw_results[0]]
+			yc_data = [raw_results[1]]
+			ys_data = [raw_results[2]]
+			Et_data = [raw_results[3]]
+		else:
+			ns_data =  ns_data + [raw_results[0]]
+			yc_data =  yc_data + [raw_results[1]]
+			ys_data =  ys_data + [raw_results[2]]
+			Et_data =  Et_data + [raw_results[3]]
 
-	df_result = pd.DataFrame({"N2 Surplus" : ns_data, "Corn Yield" : yc_data, "Soy Yield" : ys_data, "Ethanol Production" : P_EtOH_data })
-	df_result.to_csv("Results.csv", index=False)
+	# Creates Directory
+	if not os.path.exists("Data_Output"):
+		os.mkdir("Data_Output")
+
+	# Saves outputs as text file
+	df_result = pd.DataFrame({"N2 Surplus" : ns_data, "Corn Yield" : yc_data, "Soybean Yield" : ys_data, "Ethanol Production" : Et_data})
+	df_result.to_csv("Data_Output/Results.csv", index=False)
 
 
 Assessing output
