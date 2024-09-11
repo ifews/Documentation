@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial &mdash; IFEWs 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="canonical" href="https://pjt359100.github.io/sphinx_example/Tutorial.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="IFEWs Model" href="IFEWsmodel.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            IFEWs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#openmdao-basics">OpenMDAO basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#openmdao-monodisciplinary-example">OpenMDAO Monodisciplinary Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#openmdao-multidisciplinary-example">OpenMDAO Multidisciplinary Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sklearn-linear-model-basics">Sklearn Linear Model Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sklearn-linear-model-example">Sklearn Linear Model Example</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="IFEWsmodel.html">IFEWs Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_data.html">Getting data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approximation.html">Approximation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_reference.html">Additional Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">IFEWs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading"></a></h1>
+<p>IFEWs model is a program built with the <strong>OpenMDAO software framework</strong>, which is a Python-based open-source platform for performing multidisciplinary optimization and systems analysis with high-performance computing capabilities. In case you lack familiarity with OpenMDAO, it is recommended that you review the <a class="reference external" href="http://openmdao.org/twodocs/versions/latest/index.html">OpenMDAO’s documentation</a>. Also, the IFEWs model uses LinearRegression() from the <strong>sklearn linear_model package</strong> to approximate unmeasured and missing data using available historical data. Related information and tutorials can be found at the <a class="reference external" href="https://scikit-learn.org/stable/modules/linear_model.html">scikit-learn’s documentation</a>.</p>
+<p>Here, a brief overview of OpenMDAO and sklearn is provided for understanding the fundamental mechanism and the structure of the IFEWs model.</p>
+<section id="openmdao-basics">
+<h2>OpenMDAO basics<a class="headerlink" href="#openmdao-basics" title="Link to this heading"></a></h2>
+<p>In OpenMDAO, calculations are carried out inside a <code class="docutils literal notranslate"><span class="pre">Component</span></code>, which is the smallest unit of computation understood by the framework. Each <code class="docutils literal notranslate"><span class="pre">Component</span></code> produces its own set of variables. OpenMDAO provides different types of <code class="docutils literal notranslate"><span class="pre">Component</span></code> for various calculations.</p>
+<p>In order to understand the different kinds of <code class="docutils literal notranslate"><span class="pre">Component</span></code> in OpenMDAO, let us consider the following numerical model that takes <code class="docutils literal notranslate"><span class="pre">x</span></code> as an input:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\cos(x \cdot y) - z \cdot y = 0\\z = \sin(y)\end{aligned}\end{align} \]</div>
+<p>In our numerical model, we have three variables: <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, and <code class="docutils literal notranslate"><span class="pre">z</span></code>. Each of these variables needs to be defined as the output of a component. There are three basic types of <code class="docutils literal notranslate"><span class="pre">component</span></code> in OpenMDAO:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">IndepVarComp</span></code> : defines independent variables (e.g., <code class="docutils literal notranslate"><span class="pre">x</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ImplicitComponent</span></code> : defines dependent variables that are computed implicitly (e.g., <code class="docutils literal notranslate"><span class="pre">y</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ExplicitComponent</span></code> : defines dependent variables that are computed explicitly (e.g., <code class="docutils literal notranslate"><span class="pre">z</span></code>)</p></li>
+</ol>
+<p>The most straightforward way to implement the numerical model would be to assign each variable its own <code class="docutils literal notranslate"><span class="pre">Component</span></code>, as below.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 50.0%" />
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>No.</p></th>
+<th class="head"><p>Component Type</p></th>
+<th class="head"><p>Inputs</p></th>
+<th class="head"><p>Outputs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>IndepVarComp</p></td>
+<td></td>
+<td><p>x</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>ImplicitComponent</p></td>
+<td><p>x, z</p></td>
+<td><p>y</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>ExplicitComponent</p></td>
+<td><p>y</p></td>
+<td><p>z</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="openmdao-monodisciplinary-example">
+<h2>OpenMDAO Monodisciplinary Example<a class="headerlink" href="#openmdao-monodisciplinary-example" title="Link to this heading"></a></h2>
+<p>With understanding of the basic structure in the OpenMDAO framework, we can go forward to understand how to set inputs and run the model by using an analytical function.</p>
+<p>Consider a paraboloid, defined by the explicit function where x and y are the inputs to the function.</p>
+<div class="math notranslate nohighlight">
+\[f(x,y) = (x - 3.0)^2 + x \times y + (y + 4.0)^2 - 3.0\]</div>
+<p>Now we will write a script that defines this equation as a component step by step.</p>
+<p>At the top of any script you’ll import openmdao.api module which makes available the most common OpenMDAO classes and functions that are needed to build and run a model</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openmdao.api</span> <span class="k">as</span> <span class="nn">om</span>
+</pre></div>
+</div>
+<p>We define a component which you will always define as a subclass of either <code class="docutils literal notranslate"><span class="pre">ExplicitComponent</span></code> or <code class="docutils literal notranslate"><span class="pre">ImplicitComponent</span></code>. Since our simple paraboloid function is explicit, we’ll use the <code class="docutils literal notranslate"><span class="pre">ExplicitComponent</span></code>.</p>
+<p>You see three methods defined:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">setup</span></code>: define all your inputs and outputs here</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setup_partials</span></code>: declare partial derivatives. OpenMDAO approximates all the partial derivatives using the finite difference method</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compute</span></code>: calculation of all output values for the given inputs</p></li>
+</ol>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Paraboloid</span><span class="p">(</span><span class="n">om</span><span class="o">.</span><span class="n">ExplicitComponent</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s1">&#39;f_xy&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">setup_partials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">declare_partials</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;fd&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+
+    <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;f_xy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">3.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mf">4.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mf">3.0</span>
+</pre></div>
+</div>
+<p>Then, we set up the run script of the file.</p>
+<p>All OpenMDAO models are built up from a hierarchy of <code class="docutils literal notranslate"><span class="pre">Group</span></code> instances that organize the <code class="docutils literal notranslate"><span class="pre">Component</span></code>, which is Paraboloid class that we just defined in this example. Then, we pass it to the constructor of the <code class="docutils literal notranslate"><span class="pre">Problem</span></code> class and call the <code class="docutils literal notranslate"><span class="pre">setup()</span></code> method on that <code class="docutils literal notranslate"><span class="pre">Problem</span></code>. In this case, <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> have the initial values of 3.0 and -4.0 respectively and we call <code class="docutils literal notranslate"><span class="pre">run_model()</span></code> to actually perform the computation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_subsystem</span><span class="p">(</span><span class="s1">&#39;parab_comp&#39;</span><span class="p">,</span> <span class="n">Paraboloid</span><span class="p">())</span>
+
+<span class="n">prob</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">prob</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+<span class="n">prob</span><span class="o">.</span><span class="n">set_val</span><span class="p">(</span><span class="s1">&#39;parab_comp.x&#39;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
+<span class="n">prob</span><span class="o">.</span><span class="n">set_val</span><span class="p">(</span><span class="s1">&#39;parab_comp.y&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.0</span><span class="p">)</span>
+
+<span class="n">prob</span><span class="o">.</span><span class="n">run_model</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">prob</span><span class="p">[</span><span class="s1">&#39;parab_comp.f_xy&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Here is a complete script that combines all the steps above and an output of the script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openmdao.api</span> <span class="k">as</span> <span class="nn">om</span>
+
+<span class="k">class</span> <span class="nc">Paraboloid</span><span class="p">(</span><span class="n">om</span><span class="o">.</span><span class="n">ExplicitComponent</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s1">&#39;f_xy&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setup_partials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">declare_partials</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;fd&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        f(x,y) = (x-3)^2 + xy + (y+4)^2 - 3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+
+        <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;f_xy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">3.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mf">4.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mf">3.0</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">Group</span><span class="p">()</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">add_subsystem</span><span class="p">(</span><span class="s1">&#39;parab_comp&#39;</span><span class="p">,</span> <span class="n">Paraboloid</span><span class="p">())</span>
+
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <span class="n">prob</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+        <span class="n">prob</span><span class="o">.</span><span class="n">set_val</span><span class="p">(</span><span class="s1">&#39;parab_comp.x&#39;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
+        <span class="n">prob</span><span class="o">.</span><span class="n">set_val</span><span class="p">(</span><span class="s1">&#39;parab_comp.y&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.0</span><span class="p">)</span>
+
+        <span class="n">prob</span><span class="o">.</span><span class="n">run_model</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The Paraboloid value: </span><span class="si">{</span><span class="n">prob</span><span class="p">[</span><span class="s1">&#39;parab_comp.f_xy&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output of the above model is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">Paraboloid</span> <span class="n">value</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">15.</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="openmdao-multidisciplinary-example">
+<h2>OpenMDAO Multidisciplinary Example<a class="headerlink" href="#openmdao-multidisciplinary-example" title="Link to this heading"></a></h2>
+<p>The paraboloid example is the monodisciplinary example in that we built and optimized models comprised of only a single <code class="docutils literal notranslate"><span class="pre">Component</span></code>. However, the IFEWs model is multidisciplinary that involves multiple disciplines and constraints, so it is required to understand how to group <code class="docutils literal notranslate"><span class="pre">Component</span></code> together into a larger model. Now, we’ll work through a slightly more complex problem that involves two disciplines, and hence two main <code class="docutils literal notranslate"><span class="pre">Component</span></code>.</p>
+<p>The output of each <code class="docutils literal notranslate"><span class="pre">Component</span></code> feeds into the input of the other, which creates a coupled model that needs to be converged in order for the outputs to be valid. You can see the coupling between the two disciplines show up through the <code class="docutils literal notranslate"><span class="pre">y1</span></code> and <code class="docutils literal notranslate"><span class="pre">y2</span></code> variables in figure 3 that describes the problem structure.</p>
+<a class="reference internal image-reference" href="_images/multidisciplinary_examples.PNG"><img alt="Alternative text" src="_images/multidisciplinary_examples.PNG" style="width: 1000px;" /></a>
+<p class="centered">
+<strong><strong>Figure 3 : XDSM of OpenMDAO Multidisciplinary example</strong></strong></p><p>Referring to the components and the methods that we went through in the previous example, we can set up the two component for each of <code class="docutils literal notranslate"><span class="pre">y1</span></code> and <code class="docutils literal notranslate"><span class="pre">y2</span></code>. <cite>Here, `z1`</cite>, <code class="docutils literal notranslate"><span class="pre">z2</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>, and <code class="docutils literal notranslate"><span class="pre">y2</span></code> are input variables for <code class="docutils literal notranslate"><span class="pre">y1</span></code>. Similarly, <code class="docutils literal notranslate"><span class="pre">z1</span></code>, <code class="docutils literal notranslate"><span class="pre">z2</span></code>, and <code class="docutils literal notranslate"><span class="pre">y1</span></code> are input variables for <code class="docutils literal notranslate"><span class="pre">y2</span></code>.</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}y_1 = z_1^2 + z_2 + x_1 - 0.2 \cdot y_2\\y_2 = \sqrt{y_1} + z_1 + z_2\end{aligned}\end{align} \]</div>
+<p>The code for this model is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openmdao.api</span> <span class="k">as</span> <span class="nn">om</span>
+
+<span class="k">class</span> <span class="nc">SellarDis1</span><span class="p">(</span><span class="n">om</span><span class="o">.</span><span class="n">ExplicitComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Component containing Discipline 1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;y2&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s1">&#39;y1&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setup_partials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">declare_partials</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;fd&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+        <span class="n">z1</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">z2</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;y2&#39;</span><span class="p">]</span>
+
+        <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;y1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">z1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z2</span> <span class="o">+</span> <span class="n">x1</span> <span class="o">-</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">y2</span>
+
+<span class="k">class</span> <span class="nc">SellarDis2</span><span class="p">(</span><span class="n">om</span><span class="o">.</span><span class="n">ExplicitComponent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Component containing Discipline 2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s1">&#39;y1&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s1">&#39;y2&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setup_partials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">declare_partials</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;fd&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+        <span class="n">z1</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">z2</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;y1&#39;</span><span class="p">]</span>
+
+        <span class="n">outputs</span><span class="p">[</span><span class="s1">&#39;y2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y1</span><span class="o">**</span><span class="mf">.5</span> <span class="o">+</span> <span class="n">z1</span> <span class="o">+</span> <span class="n">z2</span>
+</pre></div>
+</div>
+<p>We’ve defined the two disciplinary <code class="docutils literal notranslate"><span class="pre">Component</span></code>, but there are still three outputs of the model that need to be computed: <code class="docutils literal notranslate"><span class="pre">objective</span></code>, <code class="docutils literal notranslate"><span class="pre">constraint1</span></code>, and <code class="docutils literal notranslate"><span class="pre">constraint2</span></code>. Now, we need to group the multiple <code class="docutils literal notranslate"><span class="pre">Component</span></code> altogether and tell OpenMDAO how to pass data between them.</p>
+<p>We will work with a new class: <code class="docutils literal notranslate"><span class="pre">Group</span></code> which can contain other <code class="docutils literal notranslate"><span class="pre">Group</span></code>, <code class="docutils literal notranslate"><span class="pre">Component</span></code>, or combinations of <code class="docutils literal notranslate"><span class="pre">Group</span></code> and <code class="docutils literal notranslate"><span class="pre">Component</span></code>.</p>
+<p>First, we define our own custom <code class="docutils literal notranslate"><span class="pre">Group</span></code> subclass called <code class="docutils literal notranslate"><span class="pre">SellarMDA</span></code>. In our run script, we create an instance of <code class="docutils literal notranslate"><span class="pre">SellarMDA</span></code> to actually run it. Then, inside the <code class="docutils literal notranslate"><span class="pre">setup</span></code> method of <code class="docutils literal notranslate"><span class="pre">SellarMDA</span></code>, we work directly with a <code class="docutils literal notranslate"><span class="pre">Group</span></code> instance by adding the <code class="docutils literal notranslate"><span class="pre">subsystem</span> <span class="pre">cycle</span></code>.</p>
+<p>The code is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SellarMDA</span><span class="p">(</span><span class="n">om</span><span class="o">.</span><span class="n">Group</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Group containing the Sellar MDA.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cycle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_subsystem</span><span class="p">(</span><span class="s1">&#39;cycle&#39;</span><span class="p">,</span> <span class="n">om</span><span class="o">.</span><span class="n">Group</span><span class="p">(),</span> <span class="n">promotes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">])</span>
+        <span class="n">cycle</span><span class="o">.</span><span class="n">add_subsystem</span><span class="p">(</span><span class="s1">&#39;d1&#39;</span><span class="p">,</span> <span class="n">SellarDis1</span><span class="p">(),</span> <span class="n">promotes_inputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span>
+                            <span class="n">promotes_outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y1&#39;</span><span class="p">])</span>
+        <span class="n">cycle</span><span class="o">.</span><span class="n">add_subsystem</span><span class="p">(</span><span class="s1">&#39;d2&#39;</span><span class="p">,</span> <span class="n">SellarDis2</span><span class="p">(),</span> <span class="n">promotes_inputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;y1&#39;</span><span class="p">],</span>
+                            <span class="n">promotes_outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y2&#39;</span><span class="p">])</span>
+
+        <span class="n">cycle</span><span class="o">.</span><span class="n">set_input_defaults</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">cycle</span><span class="o">.</span><span class="n">set_input_defaults</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]))</span>
+
+        <span class="c1"># Nonlinear Block Gauss Seidel is a gradient free solver</span>
+        <span class="n">cycle</span><span class="o">.</span><span class="n">nonlinear_solver</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">NonlinearBlockGS</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_subsystem</span><span class="p">(</span><span class="s1">&#39;obj_cmp&#39;</span><span class="p">,</span> <span class="n">om</span><span class="o">.</span><span class="n">ExecComp</span><span class="p">(</span><span class="s1">&#39;obj = x**2 + z[1] + y1 + exp(-y2)&#39;</span><span class="p">,</span>
+                                                  <span class="n">z</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.0</span><span class="p">),</span>
+                           <span class="n">promotes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;y1&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">,</span> <span class="s1">&#39;obj&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_subsystem</span><span class="p">(</span><span class="s1">&#39;con_cmp1&#39;</span><span class="p">,</span> <span class="n">om</span><span class="o">.</span><span class="n">ExecComp</span><span class="p">(</span><span class="s1">&#39;con1 = 3.16 - y1&#39;</span><span class="p">),</span> <span class="n">promotes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;con1&#39;</span><span class="p">,</span> <span class="s1">&#39;y1&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_subsystem</span><span class="p">(</span><span class="s1">&#39;con_cmp2&#39;</span><span class="p">,</span> <span class="n">om</span><span class="o">.</span><span class="n">ExecComp</span><span class="p">(</span><span class="s1">&#39;con2 = y2 - 24.0&#39;</span><span class="p">),</span> <span class="n">promotes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;con2&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">])</span>
+
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">Problem</span><span class="p">()</span>
+        <span class="n">cycle</span> <span class="o">=</span> <span class="n">prob</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add_subsystem</span><span class="p">(</span><span class="s1">&#39;cycle&#39;</span><span class="p">,</span> <span class="n">om</span><span class="o">.</span><span class="n">Group</span><span class="p">(),</span> <span class="n">promotes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">])</span>
+        <span class="n">cycle</span><span class="o">.</span><span class="n">add_subsystem</span><span class="p">(</span><span class="s1">&#39;d1&#39;</span><span class="p">,</span> <span class="n">SellarDis1</span><span class="p">(),</span> <span class="n">promotes_inputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">],</span> <span class="n">promotes_outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y1&#39;</span><span class="p">])</span>
+        <span class="n">cycle</span><span class="o">.</span><span class="n">add_subsystem</span><span class="p">(</span><span class="s1">&#39;d2&#39;</span><span class="p">,</span> <span class="n">SellarDis2</span><span class="p">(),</span> <span class="n">promotes_inputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;y1&#39;</span><span class="p">],</span> <span class="n">promotes_outputs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;y2&#39;</span><span class="p">])</span>
+
+        <span class="n">cycle</span><span class="o">.</span><span class="n">nonlinear_solver</span> <span class="o">=</span> <span class="n">om</span><span class="o">.</span><span class="n">NonlinearBlockGS</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="sklearn-linear-model-basics">
+<h2>Sklearn Linear Model Basics<a class="headerlink" href="#sklearn-linear-model-basics" title="Link to this heading"></a></h2>
+<p>The following is a method intended for ordinary least squares linear regression:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">sklearn</span><span class="o">.</span><span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">copy_X</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code> fits a linear model with coefficients <code class="docutils literal notranslate"><span class="pre">w</span></code> = (w1, … , wp) to minimize the residual sum of squares between the observed targets in the dataset by the linear approximation.</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\min_{w} \|X \cdot w - y \|_2^2\\w = (w1, …, wp)\end{aligned}\end{align} \]</div>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Parameters:</dt><dd><ul>
+<li><dl class="simple">
+<dt>fit_intercept, bool, default=True</dt><dd><p>Whether to calculate the intercept for this model. If set to False, no intercept will be used in calculations (i.e. data is expected to be centered).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>copy_X, bool, default=True</dt><dd><p>If True, X will be copied; else, it may be overwritten.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>n_jobs, int, default=None</dt><dd><p>The number of jobs to use for the computation. This will only provide speedup in case of sufficiently large problems, that is if firstly n_targets &gt; 1 and secondly X is sparse or if positive is set to True. None means 1 unless in a joblib.parallel_backend context. -1 means using all processors.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>positive, bool, default=False</dt><dd><p>When set to True, forces the coefficients to be positive. This option is only supported for dense arrays.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="sklearn-linear-model-example">
+<h2>Sklearn Linear Model Example<a class="headerlink" href="#sklearn-linear-model-example" title="Link to this heading"></a></h2>
+<p>In the IFEWs model which depends on historical data, we use Sklearn linear regression to approximate the data for certain years where we do not have data to represent that term. The steps are the following:</p>
+<ol class="arabic simple">
+<li><p>We set a linear regression model according to the existing data.</p></li>
+<li><p>We predict the unknown value by inputting a new label.</p></li>
+</ol>
+<ul>
+<li><dl>
+<dt>We will use two methods:</dt><dd><ul>
+<li><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">fit(X,</span> <span class="pre">y)</span></code><span class="classifier">Fit linear model.</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">X</span></code> : {array-like, sparse matrix} of shape (n_samples, n_features) = <strong>Training data</strong>,</p>
+<p><code class="docutils literal notranslate"><span class="pre">Y</span></code> : array-like of shape (n_samples,) or (n_samples, n_targets) = <strong>Target values</strong>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">predict(Z)</span></code><span class="classifier">Predict using the linear model.</span></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Z</span></code> : array-like or sparse matrix, shape (n_samples, n_features) = <strong>Samples</strong>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>We can perform the linear regression by using the above three methods:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span> <span class="o">+</span> <span class="mi">3</span>
+
+<span class="n">reg</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">predicted_value</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted value : </span><span class="si">{</span><span class="n">predicted_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output of the above model is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Predicted</span> <span class="n">value</span> <span class="p">:</span> <span class="p">[</span><span class="mf">16.</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We can also compute the coefficient and the intercept of the linear regression model to find the linear equation for the model.</p>
+<p>We use <code class="docutils literal notranslate"><span class="pre">coef</span> <span class="pre">method</span></code> and <code class="docutils literal notranslate"><span class="pre">intercept</span> <span class="pre">method</span></code> to find the components:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">coef_</span>
+<span class="go">array([1., 2.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg</span><span class="o">.</span><span class="n">intercept_</span>
+<span class="go">3.0...</span>
+</pre></div>
+</div>
+<p>Thus, the linear equation can be written as:</p>
+<div class="math notranslate nohighlight">
+\[y = 1 \cdot x_1 + 2 \cdot x_2 + 3\]</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="IFEWsmodel.html" class="btn btn-neutral float-right" title="IFEWs Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, CODE Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
