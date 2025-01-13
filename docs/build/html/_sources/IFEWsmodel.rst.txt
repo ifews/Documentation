@@ -1,0 +1,21 @@
+IFEWs Model
+============
+
+After you have successfully set up requirements and examined the fundamental guides, your folder should contain the following scripts:
+
+* ``IFEWs_model.py``: OpenMDAO model of the IFEWs subsystem
+* ``batch_analysis.py``: Batch analysis script that calls the IFEWs model iteratively for all the 99 counties of Iowa from the years 1968-2019
+* ``tool_data_plot.py``: First visualization tool
+* ``tool_contour_map.py``: Second visualization tool
+* ``NN_approximate_county.py``: script that contains neural network that can approximate the data using empirical data in county level 
+
+
+You can progress to explore the main IFEWs model with several independent subsystems presented below.
+  
+.. toctree::
+   :maxdepth: 3
+ 
+   input_data
+   model_components
+   output_data
+   
