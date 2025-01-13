@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visualization &mdash; IFEWs 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="canonical" href="https://pjt359100.github.io/sphinx_example/visualization.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Additional Reference" href="user_reference.html" />
+    <link rel="prev" title="Approximation" href="approximation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            IFEWs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial.html">Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="IFEWsmodel.html">IFEWs Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_data.html">Getting data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="approximation.html">Approximation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Visualization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#plotting-tool">Plotting Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choropleth-map-tool">Choropleth Map Tool</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_reference.html">Additional Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">IFEWs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Visualization</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/visualization.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="visualization">
+<h1>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h1>
+<p>Once you can run the model and generate the output, we have two scripts that post-process and analyze the output with visualizations.
+The tools are coded in Jupyter Notebook and were developed such that the code blocks must be executed in series.
+Additonal python packages required by the tools are listed at the top and can be found in counda-forge.
+Both tools load the output file from the model and make visualizations based on the output variables.</p>
+<section id="plotting-tool">
+<h2>Plotting Tool<a class="headerlink" href="#plotting-tool" title="Link to this heading"></a></h2>
+<p>This tool generates the validation plot for the Energy subsystem using EIA data of ethanol produced in Iowa and compares it with the modelled production of Ethanol.
+Additionally, the tool also generates an interactive widget, which can plot the time series of variables outputted by the model for a specific county.
+The widget includes all 99 counties of Iowa and can plot all the modelled output variables. The function of the code blocks are explained below:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Imports the required packages</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+</pre></div>
+</div>
+</li>
+<li><p>Read the output file generated by the batch analysis script and defines the required widgets</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load Result Data</span>
+<span class="n">loc_R</span> <span class="o">=</span> <span class="s1">&#39;Data_Output/Results.csv&#39;</span>
+<span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">loc_R</span><span class="p">)</span>
+
+<span class="c1"># Parse Result Data</span>
+<span class="n">ns_data</span> <span class="o">=</span> <span class="n">df_result</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">yc_data</span> <span class="o">=</span> <span class="n">df_result</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">ys_data</span> <span class="o">=</span> <span class="n">df_result</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">ep_data</span> <span class="o">=</span> <span class="n">df_result</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="c1"># Load Animal Agriculture Data</span>
+<span class="n">loc_AA</span> <span class="o">=</span> <span class="s1">&#39;Data_Input/animal_agriculture_data/IFEW_Counties_1997_2019.csv&#39;</span>
+<span class="n">df_AA</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">loc_AA</span><span class="p">)</span> <span class="c1"># Animal Agricultural dataframe</span>
+
+<span class="c1"># Parse Animal Agricultural Data</span>
+<span class="n">yc_real</span> <span class="o">=</span> <span class="n">df_AA</span><span class="p">[</span><span class="s2">&quot;CornGrainYield_bupacre&quot;</span><span class="p">]</span>
+<span class="n">ys_real</span> <span class="o">=</span> <span class="n">df_AA</span><span class="p">[</span><span class="s2">&quot;SoybeansYield_bupacre&quot;</span><span class="p">]</span>
+
+<span class="n">years</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1997</span><span class="p">,</span> <span class="mi">2020</span><span class="p">))</span>
+
+<span class="c1"># Load Energy Validation Data</span>
+<span class="n">loc_NRG</span> <span class="o">=</span> <span class="s1">&#39;Data_Validation/Iowa Historical Ethanol and Biodiesel Production EIA.csv&#39;</span>
+<span class="n">df_AA</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">loc_NRG</span><span class="p">)</span>
+
+<span class="c1"># Parse Energy Validation Data</span>
+<span class="n">val_nrg_yr</span> <span class="o">=</span> <span class="n">df_AA</span><span class="p">[</span><span class="s2">&quot;Year&quot;</span><span class="p">]</span>
+<span class="n">val_nrg_bd</span> <span class="o">=</span> <span class="n">df_AA</span><span class="p">[</span><span class="s2">&quot;BDPRP&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">42</span> <span class="o">/</span> <span class="mf">1e6</span> <span class="c1"># Thousand of Barrels to MGal</span>
+<span class="n">val_nrg_ep</span> <span class="o">=</span> <span class="n">df_AA</span><span class="p">[</span><span class="s2">&quot;ENPRP&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">42</span> <span class="o">/</span> <span class="mf">1e6</span> <span class="c1"># Thousand of Barrels to MGal</span>
+<span class="n">tot_ep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">))</span>
+
+<span class="c1"># Define Dropdown Widget</span>
+<span class="n">county_dropdown</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span>
+   <span class="n">options</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;Adair&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Adams&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Allamakee&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Appanoose&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Audubon&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Benton&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Black Hawk&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Boone&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Bremer&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Buchanan&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Buena Vista&#39;</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Butler&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Calhoun&#39;</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Carroll&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Cass&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Cedar&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Cerro Gordo&#39;</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Cherokee&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Chickasaw&#39;</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Clarke&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Clay&#39;</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Clayton&#39;</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Clinton&#39;</span><span class="p">,</span> <span class="mi">23</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Crawford&#39;</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Dallas&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Davis&#39;</span><span class="p">,</span> <span class="mi">26</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Decatur&#39;</span><span class="p">,</span> <span class="mi">27</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Delaware&#39;</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Des Moines&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Dickinson&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Dubuque&#39;</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Emmet&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Fayette&#39;</span><span class="p">,</span> <span class="mi">33</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Floyd&#39;</span><span class="p">,</span> <span class="mi">34</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Franklin&#39;</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Fremont&#39;</span><span class="p">,</span> <span class="mi">36</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Greene&#39;</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Grundy&#39;</span><span class="p">,</span> <span class="mi">38</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Guthrie&#39;</span><span class="p">,</span> <span class="mi">39</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Hamilton&#39;</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Hancock&#39;</span><span class="p">,</span> <span class="mi">41</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Hardin&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Harrison&#39;</span><span class="p">,</span> <span class="mi">43</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Henry&#39;</span><span class="p">,</span> <span class="mi">44</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Howard&#39;</span><span class="p">,</span> <span class="mi">45</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Humboldt&#39;</span><span class="p">,</span> <span class="mi">46</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Ida&#39;</span><span class="p">,</span> <span class="mi">47</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Iowa&#39;</span><span class="p">,</span> <span class="mi">48</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Jackson&#39;</span><span class="p">,</span> <span class="mi">49</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Jasper&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Jefferson&#39;</span><span class="p">,</span> <span class="mi">51</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Johnson&#39;</span><span class="p">,</span> <span class="mi">52</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Jones&#39;</span><span class="p">,</span> <span class="mi">53</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Keokuk&#39;</span><span class="p">,</span> <span class="mi">54</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Kossuth&#39;</span><span class="p">,</span> <span class="mi">55</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Lee&#39;</span><span class="p">,</span> <span class="mi">56</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Linn&#39;</span><span class="p">,</span> <span class="mi">57</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Louisa&#39;</span><span class="p">,</span> <span class="mi">58</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Lucas&#39;</span><span class="p">,</span> <span class="mi">59</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Lyon&#39;</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Madison&#39;</span><span class="p">,</span> <span class="mi">61</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Mahaska&#39;</span><span class="p">,</span> <span class="mi">62</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Marion&#39;</span><span class="p">,</span> <span class="mi">63</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Marshall&#39;</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Mills&#39;</span><span class="p">,</span> <span class="mi">65</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Mitchell&#39;</span><span class="p">,</span> <span class="mi">66</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Monona&#39;</span><span class="p">,</span> <span class="mi">67</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Monroe&#39;</span><span class="p">,</span> <span class="mi">68</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Montgomery&#39;</span><span class="p">,</span> <span class="mi">69</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Muscatine&#39;</span><span class="p">,</span> <span class="mi">70</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Obrien&#39;</span><span class="p">,</span> <span class="mi">71</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Osceola&#39;</span><span class="p">,</span> <span class="mi">72</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Page&#39;</span><span class="p">,</span> <span class="mi">73</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Palo Alto&#39;</span><span class="p">,</span> <span class="mi">74</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Plymouth&#39;</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Pocahontas&#39;</span><span class="p">,</span> <span class="mi">76</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Polk&#39;</span><span class="p">,</span> <span class="mi">77</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Pottawattamie&#39;</span><span class="p">,</span> <span class="mi">78</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Poweshiek&#39;</span><span class="p">,</span> <span class="mi">79</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Ringgold&#39;</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Sac&#39;</span><span class="p">,</span> <span class="mi">81</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Scott&#39;</span><span class="p">,</span> <span class="mi">82</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Shelby&#39;</span><span class="p">,</span> <span class="mi">83</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Sioux&#39;</span><span class="p">,</span> <span class="mi">84</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Story&#39;</span><span class="p">,</span> <span class="mi">85</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Tama&#39;</span><span class="p">,</span> <span class="mi">86</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Taylor&#39;</span><span class="p">,</span> <span class="mi">87</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Union&#39;</span><span class="p">,</span> <span class="mi">88</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Van Buren&#39;</span><span class="p">,</span> <span class="mi">89</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Wapello&#39;</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Warren&#39;</span><span class="p">,</span> <span class="mi">91</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Washington&#39;</span><span class="p">,</span> <span class="mi">92</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Wayne&#39;</span><span class="p">,</span> <span class="mi">93</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Webster&#39;</span><span class="p">,</span> <span class="mi">94</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Winnebago&#39;</span><span class="p">,</span> <span class="mi">95</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Winneshiek&#39;</span><span class="p">,</span> <span class="mi">96</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Woodbury&#39;</span><span class="p">,</span> <span class="mi">97</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Worth&#39;</span><span class="p">,</span> <span class="mi">98</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Wright&#39;</span><span class="p">,</span> <span class="mi">99</span><span class="p">)],</span>
+   <span class="n">description</span><span class="o">=</span><span class="s1">&#39;County:&#39;</span><span class="p">,</span>
+   <span class="n">disabled</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Generates the validation plot for Ethanol</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creates Directory</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;Figures&quot;</span><span class="p">):</span>
+   <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;Figures&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;Figures/Validation&quot;</span><span class="p">):</span>
+   <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;Figures/Validation&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+   <span class="n">i</span> <span class="o">=</span> <span class="n">year</span> <span class="o">-</span> <span class="mi">1997</span>
+   <span class="n">values</span> <span class="o">=</span> <span class="n">ep_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ep_data</span><span class="p">),</span> <span class="mi">23</span><span class="p">)]</span>
+   <span class="n">tot_ep</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e9</span> <span class="c1"># Convert to MGal</span>
+
+<span class="n">fig0</span><span class="p">,</span> <span class="n">ax0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">tot_ep</span><span class="p">,</span> <span class="s2">&quot;C0o-&quot;</span><span class="p">)</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">val_nrg_yr</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">val_nrg_yr</span><span class="p">[</span><span class="n">val_nrg_yr</span> <span class="o">==</span> <span class="mi">1997</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">val_nrg_yr</span><span class="p">[</span><span class="n">val_nrg_yr</span> <span class="o">==</span> <span class="mi">2020</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])],</span> <span class="n">val_nrg_ep</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">val_nrg_yr</span><span class="p">[</span><span class="n">val_nrg_yr</span> <span class="o">==</span> <span class="mi">1997</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">val_nrg_yr</span><span class="p">[</span><span class="n">val_nrg_yr</span> <span class="o">==</span> <span class="mi">2020</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])],</span> <span class="s2">&quot;C1o-&quot;</span><span class="p">)</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">2009</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="c1"># Plot Labels</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Ethanol Production Validation&quot;</span><span class="p">)</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">)</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Ethanol Production [GGal]&quot;</span><span class="p">)</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Model Output&quot;</span><span class="p">,</span> <span class="s2">&quot;Real Data&quot;</span><span class="p">,</span> <span class="s2">&quot;New Bill&quot;</span><span class="p">],</span> <span class="n">loc</span> <span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
+
+<span class="n">ax0</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Save the plot if desired</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig_name</span> <span class="o">=</span> <span class="s2">&quot;Figures/Validation/Ethanol Production.png&quot;</span>
+<span class="n">fig0</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_name</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Define a function to generate the desired plot based on the inputs of the widget</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_function</span><span class="p">(</span><span class="n">county_no</span><span class="p">):</span>
+
+   <span class="n">fig1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+   <span class="c1"># Model Outputs</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">ns_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[(</span><span class="n">county_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">23</span> <span class="p">:</span> <span class="mi">23</span> <span class="o">+</span> <span class="p">(</span><span class="n">county_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">23</span><span class="p">],</span> <span class="s1">&#39;C0o&#39;</span><span class="p">)</span>
+   <span class="c1"># # Regression Line - Polyfit</span>
+   <span class="c1"># rl_coeffs = np.polyfit(years, ns_data.iloc[(county_no - 1) * 23 : 23 + (county_no - 1) * 23], 3)</span>
+   <span class="c1"># rl_eq = np.poly1d(rl_coeffs)</span>
+   <span class="c1"># rl_x = np.linspace(1997, 2019, 100)</span>
+   <span class="c1"># rl_y = rl_eq(rl_x)</span>
+   <span class="c1"># plt.plot(rl_x, rl_y, &#39;C1.-&#39;)</span>
+   <span class="c1"># Plot Labels</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Modelled Nitrogen Surplus Trend&quot;</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Nitrogen Surplus (kg/ha)&quot;</span><span class="p">)</span>
+   <span class="c1"># plt.legend([&quot;Model Output&quot;, &quot;Regression Fit&quot;], loc =&quot;best&quot;)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+   <span class="n">fig2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+   <span class="c1"># Model Outputs</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">yc_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[(</span><span class="n">county_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">23</span> <span class="p">:</span> <span class="mi">23</span> <span class="o">+</span> <span class="p">(</span><span class="n">county_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">23</span><span class="p">],</span> <span class="s1">&#39;C0.-&#39;</span><span class="p">)</span>
+   <span class="c1"># Real Data</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">yc_real</span><span class="o">.</span><span class="n">iloc</span><span class="p">[(</span><span class="n">county_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">23</span> <span class="p">:</span> <span class="mi">23</span> <span class="o">+</span> <span class="p">(</span><span class="n">county_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">23</span><span class="p">],</span> <span class="s1">&#39;C1.-&#39;</span><span class="p">)</span>
+   <span class="c1"># Plot Labels</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Modelled Corn Yield Trend&quot;</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Corn Yield (bu/acre)&quot;</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Model Output&quot;</span><span class="p">,</span> <span class="s2">&quot;Real Data&quot;</span><span class="p">],</span> <span class="n">loc</span> <span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+   <span class="n">fig3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+   <span class="c1"># Scatter - Model Outputs</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">ys_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[(</span><span class="n">county_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">23</span> <span class="p">:</span> <span class="mi">23</span> <span class="o">+</span> <span class="p">(</span><span class="n">county_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">23</span><span class="p">],</span> <span class="s1">&#39;C0.-&#39;</span><span class="p">)</span>
+   <span class="c1"># Real Data</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">years</span><span class="p">,</span> <span class="n">ys_real</span><span class="o">.</span><span class="n">iloc</span><span class="p">[(</span><span class="n">county_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">23</span> <span class="p">:</span> <span class="mi">23</span> <span class="o">+</span> <span class="p">(</span><span class="n">county_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">23</span><span class="p">],</span> <span class="s1">&#39;C1.-&#39;</span><span class="p">)</span>
+   <span class="c1"># Plot Labels</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Modelled Soybean Yield Trend&quot;</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Soybean Yield (bu/acre)&quot;</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Model Output&quot;</span><span class="p">,</span> <span class="s2">&quot;Real Data&quot;</span><span class="p">],</span> <span class="n">loc</span> <span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+   <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p>Generates the interactive widget</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">widgets</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">plot_function</span><span class="p">,</span> <span class="n">county_no</span> <span class="o">=</span> <span class="n">county_dropdown</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+<p>The ethanol validation plot with the modelled ethanol production and EIA data is shown below:</p>
+<a class="reference internal image-reference" href="_images/E_prod.png"><img alt="Ethanol Validation Plot" src="_images/E_prod.png" style="width: 700px;" /></a>
+</section>
+<section id="choropleth-map-tool">
+<h2>Choropleth Map Tool<a class="headerlink" href="#choropleth-map-tool" title="Link to this heading"></a></h2>
+<p>This tool generates choropleth maps, which is a type of statistical thematic map that uses pseudocolor to visualize the modelled data geographically.
+The plot is made by an interactive widgets with inputs for the desired year and can plot all the output variables.
+Additionally, the tool can also save the maps for all variables as a set of images to generate a time series GIF.</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Imports the required packages</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+</pre></div>
+</div>
+</li>
+<li><p>Reads the output file generated by the batch analysis script and defines the required widgets</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load Result Data</span>
+<span class="n">loc_R</span> <span class="o">=</span> <span class="s1">&#39;Data_Output/Results.csv&#39;</span>
+<span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">loc_R</span><span class="p">)</span>
+
+<span class="c1"># Parse Result Data</span>
+<span class="n">ns_data</span> <span class="o">=</span> <span class="n">df_result</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">yc_data</span> <span class="o">=</span> <span class="n">df_result</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">ys_data</span> <span class="o">=</span> <span class="n">df_result</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">ep_data</span> <span class="o">=</span> <span class="n">df_result</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="c1"># Load Animal Agriculture Data</span>
+<span class="n">loc_AA</span> <span class="o">=</span> <span class="s1">&#39;Data_Input/animal_agriculture_data/IFEW_Counties_1997_2019.csv&#39;</span>
+<span class="n">df_AA</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">loc_AA</span><span class="p">)</span> <span class="c1"># Animal Agricultural dataframe</span>
+
+<span class="c1"># Parse Animal Agricultural Data</span>
+<span class="n">yc_real</span> <span class="o">=</span> <span class="n">df_AA</span><span class="p">[</span><span class="s2">&quot;CornGrainYield_bupacre&quot;</span><span class="p">]</span>
+<span class="n">ys_real</span> <span class="o">=</span> <span class="n">df_AA</span><span class="p">[</span><span class="s2">&quot;SoybeansYield_bupacre&quot;</span><span class="p">]</span>
+
+<span class="n">years</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1997</span><span class="p">,</span> <span class="mi">2020</span><span class="p">))</span>
+
+<span class="c1"># Load Energy Validation Data</span>
+<span class="n">loc_NRG</span> <span class="o">=</span> <span class="s1">&#39;Data_Validation/Iowa Historical Ethanol and Biodiesel Production EIA.csv&#39;</span>
+<span class="n">df_AA</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">loc_NRG</span><span class="p">)</span>
+
+<span class="c1"># Parse Energy Validation Data</span>
+<span class="n">val_nrg_yr</span> <span class="o">=</span> <span class="n">df_AA</span><span class="p">[</span><span class="s2">&quot;Year&quot;</span><span class="p">]</span>
+<span class="n">val_nrg_bd</span> <span class="o">=</span> <span class="n">df_AA</span><span class="p">[</span><span class="s2">&quot;BDPRP&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">42</span> <span class="o">/</span> <span class="mf">1e6</span> <span class="c1"># Thousand of Barrels to MGal</span>
+<span class="n">val_nrg_ep</span> <span class="o">=</span> <span class="n">df_AA</span><span class="p">[</span><span class="s2">&quot;ENPRP&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">42</span> <span class="o">/</span> <span class="mf">1e6</span> <span class="c1"># Thousand of Barrels to MGal</span>
+<span class="n">tot_ep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">))</span>
+
+<span class="c1"># Define Dropdown Widget</span>
+<span class="n">county_dropdown</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span>
+   <span class="n">options</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;Adair&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Adams&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Allamakee&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Appanoose&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Audubon&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Benton&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Black Hawk&#39;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Boone&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Bremer&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Buchanan&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Buena Vista&#39;</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Butler&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Calhoun&#39;</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Carroll&#39;</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Cass&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Cedar&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Cerro Gordo&#39;</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Cherokee&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Chickasaw&#39;</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Clarke&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Clay&#39;</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Clayton&#39;</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Clinton&#39;</span><span class="p">,</span> <span class="mi">23</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Crawford&#39;</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Dallas&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Davis&#39;</span><span class="p">,</span> <span class="mi">26</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Decatur&#39;</span><span class="p">,</span> <span class="mi">27</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Delaware&#39;</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Des Moines&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Dickinson&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Dubuque&#39;</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Emmet&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Fayette&#39;</span><span class="p">,</span> <span class="mi">33</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Floyd&#39;</span><span class="p">,</span> <span class="mi">34</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Franklin&#39;</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Fremont&#39;</span><span class="p">,</span> <span class="mi">36</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Greene&#39;</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Grundy&#39;</span><span class="p">,</span> <span class="mi">38</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Guthrie&#39;</span><span class="p">,</span> <span class="mi">39</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Hamilton&#39;</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Hancock&#39;</span><span class="p">,</span> <span class="mi">41</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Hardin&#39;</span><span class="p">,</span> <span class="mi">42</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Harrison&#39;</span><span class="p">,</span> <span class="mi">43</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Henry&#39;</span><span class="p">,</span> <span class="mi">44</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Howard&#39;</span><span class="p">,</span> <span class="mi">45</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Humboldt&#39;</span><span class="p">,</span> <span class="mi">46</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Ida&#39;</span><span class="p">,</span> <span class="mi">47</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Iowa&#39;</span><span class="p">,</span> <span class="mi">48</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Jackson&#39;</span><span class="p">,</span> <span class="mi">49</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Jasper&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Jefferson&#39;</span><span class="p">,</span> <span class="mi">51</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Johnson&#39;</span><span class="p">,</span> <span class="mi">52</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Jones&#39;</span><span class="p">,</span> <span class="mi">53</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Keokuk&#39;</span><span class="p">,</span> <span class="mi">54</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Kossuth&#39;</span><span class="p">,</span> <span class="mi">55</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Lee&#39;</span><span class="p">,</span> <span class="mi">56</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Linn&#39;</span><span class="p">,</span> <span class="mi">57</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Louisa&#39;</span><span class="p">,</span> <span class="mi">58</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Lucas&#39;</span><span class="p">,</span> <span class="mi">59</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Lyon&#39;</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Madison&#39;</span><span class="p">,</span> <span class="mi">61</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Mahaska&#39;</span><span class="p">,</span> <span class="mi">62</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Marion&#39;</span><span class="p">,</span> <span class="mi">63</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Marshall&#39;</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Mills&#39;</span><span class="p">,</span> <span class="mi">65</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Mitchell&#39;</span><span class="p">,</span> <span class="mi">66</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Monona&#39;</span><span class="p">,</span> <span class="mi">67</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Monroe&#39;</span><span class="p">,</span> <span class="mi">68</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Montgomery&#39;</span><span class="p">,</span> <span class="mi">69</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Muscatine&#39;</span><span class="p">,</span> <span class="mi">70</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Obrien&#39;</span><span class="p">,</span> <span class="mi">71</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Osceola&#39;</span><span class="p">,</span> <span class="mi">72</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Page&#39;</span><span class="p">,</span> <span class="mi">73</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Palo Alto&#39;</span><span class="p">,</span> <span class="mi">74</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Plymouth&#39;</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Pocahontas&#39;</span><span class="p">,</span> <span class="mi">76</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Polk&#39;</span><span class="p">,</span> <span class="mi">77</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Pottawattamie&#39;</span><span class="p">,</span> <span class="mi">78</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Poweshiek&#39;</span><span class="p">,</span> <span class="mi">79</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Ringgold&#39;</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Sac&#39;</span><span class="p">,</span> <span class="mi">81</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Scott&#39;</span><span class="p">,</span> <span class="mi">82</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Shelby&#39;</span><span class="p">,</span> <span class="mi">83</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Sioux&#39;</span><span class="p">,</span> <span class="mi">84</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Story&#39;</span><span class="p">,</span> <span class="mi">85</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Tama&#39;</span><span class="p">,</span> <span class="mi">86</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Taylor&#39;</span><span class="p">,</span> <span class="mi">87</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Union&#39;</span><span class="p">,</span> <span class="mi">88</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Van Buren&#39;</span><span class="p">,</span> <span class="mi">89</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Wapello&#39;</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Warren&#39;</span><span class="p">,</span> <span class="mi">91</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Washington&#39;</span><span class="p">,</span> <span class="mi">92</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Wayne&#39;</span><span class="p">,</span> <span class="mi">93</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Webster&#39;</span><span class="p">,</span> <span class="mi">94</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Winnebago&#39;</span><span class="p">,</span> <span class="mi">95</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Winneshiek&#39;</span><span class="p">,</span> <span class="mi">96</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Woodbury&#39;</span><span class="p">,</span> <span class="mi">97</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Worth&#39;</span><span class="p">,</span> <span class="mi">98</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Wright&#39;</span><span class="p">,</span> <span class="mi">99</span><span class="p">)],</span>
+   <span class="n">description</span><span class="o">=</span><span class="s1">&#39;County:&#39;</span><span class="p">,</span>
+   <span class="n">disabled</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Defines a function to generate the desired choropleth map based on the inputs of the widget</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_function</span><span class="p">(</span><span class="n">output_no</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+
+   <span class="n">year</span> <span class="o">=</span> <span class="n">year</span> <span class="o">-</span> <span class="mi">1997</span>
+
+   <span class="k">if</span> <span class="n">output_no</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="n">values</span> <span class="o">=</span> <span class="n">ns_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ns_data</span><span class="p">),</span> <span class="mi">23</span><span class="p">)]</span>
+      <span class="n">lower_bound</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ns_data</span><span class="p">)</span>
+      <span class="n">upper_bound</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ns_data</span><span class="p">)</span>
+      <span class="n">var_name</span> <span class="o">=</span> <span class="s2">&quot;Nitrogen Surplus&quot;</span>
+      <span class="n">unit_name</span> <span class="o">=</span> <span class="s2">&quot;[kg/ha]&quot;</span>
+   <span class="k">elif</span> <span class="n">output_no</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="n">values</span> <span class="o">=</span> <span class="n">yc_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">yc_data</span><span class="p">),</span> <span class="mi">23</span><span class="p">)]</span>
+      <span class="n">lower_bound</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">yc_data</span><span class="p">)</span>
+      <span class="n">upper_bound</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">yc_data</span><span class="p">)</span>
+      <span class="n">var_name</span> <span class="o">=</span> <span class="s2">&quot;Corn Yield&quot;</span>
+      <span class="n">unit_name</span> <span class="o">=</span> <span class="s2">&quot;[bu/acre]&quot;</span>
+   <span class="k">elif</span> <span class="n">output_no</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+      <span class="n">values</span> <span class="o">=</span> <span class="n">ys_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys_data</span><span class="p">),</span> <span class="mi">23</span><span class="p">)]</span>
+      <span class="n">lower_bound</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys_data</span><span class="p">)</span>
+      <span class="n">upper_bound</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys_data</span><span class="p">)</span>
+      <span class="n">var_name</span> <span class="o">=</span> <span class="s2">&quot;Soybean Yield&quot;</span>
+      <span class="n">unit_name</span> <span class="o">=</span> <span class="s2">&quot;[bu/acre]&quot;</span>
+   <span class="k">elif</span> <span class="n">output_no</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+      <span class="n">values</span> <span class="o">=</span> <span class="n">ep_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ep_data</span><span class="p">),</span> <span class="mi">23</span><span class="p">)]</span> <span class="o">/</span> <span class="mf">1e6</span> <span class="c1"># Convert to Millions of Gals</span>
+      <span class="n">lower_bound</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ep_data</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span>
+      <span class="n">upper_bound</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ep_data</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span>
+      <span class="n">var_name</span> <span class="o">=</span> <span class="s2">&quot;Ethanol Production&quot;</span>
+      <span class="n">unit_name</span> <span class="o">=</span> <span class="s2">&quot;[Mgal]&quot;</span>
+
+   <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">fips</span><span class="p">,</span> <span class="n">values</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+   <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">choropleth</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">geojson</span> <span class="o">=</span> <span class="n">counties</span><span class="p">,</span> <span class="n">locations</span> <span class="o">=</span> <span class="n">fips</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+                        <span class="n">color_continuous_scale</span> <span class="o">=</span> <span class="s2">&quot;Turbo&quot;</span><span class="p">,</span>
+                        <span class="c1"># color_continuous_scale = &quot;Viridis&quot;,</span>
+                        <span class="n">range_color</span> <span class="o">=</span> <span class="p">(</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">),</span>
+                        <span class="n">scope</span> <span class="o">=</span> <span class="s2">&quot;usa&quot;</span><span class="p">,</span>
+                        <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> in Iowa (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1997</span><span class="p">)))</span>
+
+   <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">margin</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;r&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;t&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s2">&quot;l&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">},</span>
+                     <span class="n">title_x</span> <span class="o">=</span> <span class="mf">0.45</span><span class="p">,</span>
+                     <span class="n">title_y</span> <span class="o">=</span> <span class="mf">0.97</span><span class="p">,</span>
+                     <span class="n">coloraxis_colorbar</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">title</span> <span class="o">=</span> <span class="n">unit_name</span><span class="p">,</span>
+                        <span class="n">y</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+                        <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">))</span>
+
+   <span class="n">fig</span><span class="o">.</span><span class="n">update_geos</span><span class="p">(</span><span class="n">fitbounds</span> <span class="o">=</span> <span class="s2">&quot;locations&quot;</span><span class="p">)</span>
+   <span class="k">return</span> <span class="n">fig</span>
+</pre></div>
+</div>
+</li>
+<li><p>Generates the interactive widget</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Interactive Visualization</span>
+<span class="n">widgets</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">plot_function</span><span class="p">,</span> <span class="n">year</span> <span class="o">=</span> <span class="n">year_slider</span><span class="p">,</span> <span class="n">output_no</span> <span class="o">=</span> <span class="n">output_dropdown</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Creates directories to save images</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creates Directory</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;Figures&quot;</span><span class="p">):</span>
+   <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;Figures&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;Figures/Nitrogen Surplus&quot;</span><span class="p">):</span>
+   <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;Figures/Nitrogen Surplus&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;Figures/Corn Yield&quot;</span><span class="p">):</span>
+   <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;Figures/Corn Yield&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;Figures/Soybean Yield&quot;</span><span class="p">):</span>
+   <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;Figures/Soybean Yield&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;Figures/Ethanol Production&quot;</span><span class="p">):</span>
+   <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;Figures/Ethanol Production&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Saves static images of all the maps created by the tool</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="c1"># Code to Save All Figures</span>
+<span class="k">for</span> <span class="n">output_no</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+   <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1997</span><span class="p">,</span> <span class="mi">2020</span><span class="p">):</span>
+      <span class="n">year</span> <span class="o">=</span> <span class="n">year</span> <span class="o">-</span> <span class="mi">1997</span>
+      <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="n">j</span>
+
+      <span class="k">if</span> <span class="n">output_no</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">ns_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ns_data</span><span class="p">),</span> <span class="mi">23</span><span class="p">)]</span>
+            <span class="n">lower_bound</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ns_data</span><span class="p">)</span>
+            <span class="n">upper_bound</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ns_data</span><span class="p">)</span>
+            <span class="n">var_name</span> <span class="o">=</span> <span class="s2">&quot;Nitrogen Surplus&quot;</span>
+            <span class="n">unit_name</span> <span class="o">=</span> <span class="s2">&quot;[kg/ha]&quot;</span>
+      <span class="k">elif</span> <span class="n">output_no</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">yc_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">yc_data</span><span class="p">),</span> <span class="mi">23</span><span class="p">)]</span>
+            <span class="n">lower_bound</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">yc_data</span><span class="p">)</span>
+            <span class="n">upper_bound</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">yc_data</span><span class="p">)</span>
+            <span class="n">var_name</span> <span class="o">=</span> <span class="s2">&quot;Corn Yield&quot;</span>
+            <span class="n">unit_name</span> <span class="o">=</span> <span class="s2">&quot;[bu/acre]&quot;</span>
+      <span class="k">elif</span> <span class="n">output_no</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">ys_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ys_data</span><span class="p">),</span> <span class="mi">23</span><span class="p">)]</span>
+            <span class="n">lower_bound</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ys_data</span><span class="p">)</span>
+            <span class="n">upper_bound</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ys_data</span><span class="p">)</span>
+            <span class="n">var_name</span> <span class="o">=</span> <span class="s2">&quot;Soybean Yield&quot;</span>
+            <span class="n">unit_name</span> <span class="o">=</span> <span class="s2">&quot;[bu/acre]&quot;</span>
+      <span class="k">elif</span> <span class="n">output_no</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">ep_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">range</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ep_data</span><span class="p">),</span> <span class="mi">23</span><span class="p">)]</span> <span class="o">/</span> <span class="mf">1e6</span> <span class="c1"># Convert to Millions of Gals</span>
+            <span class="n">lower_bound</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ep_data</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span>
+            <span class="n">upper_bound</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ep_data</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span>
+            <span class="n">var_name</span> <span class="o">=</span> <span class="s2">&quot;Ethanol Production&quot;</span>
+            <span class="n">unit_name</span> <span class="o">=</span> <span class="s2">&quot;[Mgal]&quot;</span>
+
+      <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">fips</span><span class="p">,</span> <span class="n">values</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+      <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">choropleth</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">geojson</span> <span class="o">=</span> <span class="n">counties</span><span class="p">,</span> <span class="n">locations</span> <span class="o">=</span> <span class="n">fips</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+                           <span class="n">color_continuous_scale</span> <span class="o">=</span> <span class="s2">&quot;Turbo&quot;</span><span class="p">,</span>
+                           <span class="c1"># color_continuous_scale = &quot;Viridis&quot;,</span>
+                           <span class="n">range_color</span> <span class="o">=</span> <span class="p">(</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">),</span>
+                           <span class="n">width</span> <span class="o">=</span> <span class="mi">900</span><span class="p">,</span>
+                           <span class="n">height</span> <span class="o">=</span> <span class="mi">450</span><span class="p">,</span>
+                           <span class="n">scope</span> <span class="o">=</span> <span class="s2">&quot;usa&quot;</span><span class="p">,</span>
+                           <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> in Iowa (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1997</span><span class="p">)))</span>
+
+      <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">margin</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;r&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s2">&quot;t&quot;</span><span class="p">:</span><span class="mi">25</span><span class="p">,</span><span class="s2">&quot;l&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">},</span>
+                        <span class="n">title_x</span> <span class="o">=</span> <span class="mf">0.45</span><span class="p">,</span>
+                        <span class="n">title_y</span> <span class="o">=</span> <span class="mf">0.98</span><span class="p">,</span>
+                        <span class="n">coloraxis_colorbar</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="n">unit_name</span><span class="p">))</span>
+
+      <span class="n">fig</span><span class="o">.</span><span class="n">update_geos</span><span class="p">(</span><span class="n">fitbounds</span> <span class="o">=</span> <span class="s2">&quot;locations&quot;</span><span class="p">)</span>
+
+      <span class="n">fig_name</span> <span class="o">=</span> <span class="s2">&quot;Figures/</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> - </span><span class="si">{}</span><span class="s2">.png&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="n">var_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1997</span><span class="p">))</span>
+      <span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">fig_name</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">All figures have been saved!!!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>From the static images generated by the tool, GIFs were created and are shown below:</p>
+<ul class="simple">
+<li><p>Nitrogen Surplus:</p></li>
+</ul>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/NS.gif"><img alt="Nitrogen Surplus GIF" src="_images/NS.gif" style="width: 800px;" /></a>
+</div></blockquote>
+<ul class="simple">
+<li><p>Ethanol Production:</p></li>
+</ul>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/EP.gif"><img alt="Ethanol Production GIF" src="_images/EP.gif" style="width: 800px;" /></a>
+</div></blockquote>
+<ul class="simple">
+<li><p>Corn Yield:</p></li>
+</ul>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/CY.gif"><img alt="Corn Yield GIF" src="_images/CY.gif" style="width: 800px;" /></a>
+</div></blockquote>
+<ul class="simple">
+<li><p>Soybean Yield:</p></li>
+</ul>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/SY.gif"><img alt="Soybean Yield GIF" src="_images/SY.gif" style="width: 800px;" /></a>
+</div></blockquote>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="approximation.html" class="btn btn-neutral float-left" title="Approximation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="user_reference.html" class="btn btn-neutral float-right" title="Additional Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, CODE Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

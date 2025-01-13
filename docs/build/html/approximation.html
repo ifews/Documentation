@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Approximation &mdash; IFEWs 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+    <link rel="canonical" href="https://pjt359100.github.io/sphinx_example/approximation.html" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Visualization" href="visualization.html" />
+    <link rel="prev" title="Getting data" href="getting_data.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            IFEWs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial.html">Tutorial</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="IFEWsmodel.html">IFEWs Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_data.html">Getting data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Approximation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#importing-libraries">Importing libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prepocessing-data">Prepocessing data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#neural-network">Neural network</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_reference.html">Additional Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">IFEWs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Approximation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/approximation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="approximation">
+<h1>Approximation<a class="headerlink" href="#approximation" title="Link to this heading"></a></h1>
+<p>By utilizing a neural network, we can approximate data for a specific county when sufficient training data from surrounding counties is available. To build a large enough dataset for the neural network, we combine data using one of two approaches. The first approach incorporates data from neighboring counties that share borders with the target county. The second method uses data from the eight surrounding counties, regardless of whether they share borders. These counties include those located to the north-east, north-west, north-central, central-east, central-west, south-east, south-west, and south-central of the target county. By aggregating data from these counties over the period from 1968 to 2019, we create a robust dataset for model training. In this case, I used RCN and corn yield data, allowing the neural network to approximate the RCN value based on corn yield inputs. However, users can substitute any variable of interest, as long as it is included in the CSV file used as the empirical data for this model.</p>
+<section id="importing-libraries">
+<h2>Importing libraries<a class="headerlink" href="#importing-libraries" title="Link to this heading"></a></h2>
+<p>You can simply import external packages and function by using <code class="docutils literal notranslate"><span class="pre">import</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">imp_function</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">Cvg_County</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">Cvg_County.py</span></code> is the file that funds surrounding counties of the inputted county.
+<code class="docutils literal notranslate"><span class="pre">imp_function.py</span></code> is the file that has functions that are used here, which include training the neural network.</p>
+</div>
+</section>
+<section id="prepocessing-data">
+<h2>Prepocessing data<a class="headerlink" href="#prepocessing-data" title="Link to this heading"></a></h2>
+<p>The first step involves setting and loading values that are used to initialize creating the training data.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load Animal Agriculture data -----------</span>
+<span class="n">loc_AA</span> <span class="o">=</span> <span class="s1">&#39;animal_agriculture_data/IFEW_Counties_1997_2019.csv&#39;</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">loc_AA</span><span class="p">)</span>
+
+<span class="c1"># Capitalize only the first letter.Ex) Lyon, Marchall, etc.</span>
+<span class="n">user_input</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> County name : &quot;</span><span class="p">)</span>
+
+<span class="n">method_input</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Choose the method </span><span class="se">\n</span><span class="s2"> 1. Surrounding counties </span><span class="se">\n</span><span class="s2"> 2. Agricultural district </span><span class="se">\n\n</span><span class="s2"> Method : &quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">method_input</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> You selected 1.Surrounding counties&quot;</span><span class="p">)</span>
+        <span class="n">selected_counties</span> <span class="o">=</span> <span class="n">get_surrounding_counties</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+        <span class="n">formatted_string</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">selected_counties</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Surrounding counties are </span><span class="si">{</span><span class="n">formatted_string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">aggregated_data</span> <span class="o">=</span> <span class="n">aggregate_surrounding_data</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="k">elif</span> <span class="n">method_input</span> <span class="o">==</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> You selected 2. Agricultural district&quot;</span><span class="p">)</span>
+        <span class="n">selected_counties</span> <span class="o">=</span> <span class="n">get_counties_in_same_district</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+        <span class="n">district</span> <span class="o">=</span> <span class="n">get_district_by_county</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> The district for </span><span class="si">{</span><span class="n">user_input</span><span class="si">}</span><span class="s2"> is: </span><span class="si">{</span><span class="n">district</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">aggregated_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;CountyName&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">selected_counties</span><span class="p">)]</span>
+
+
+<span class="c1"># Extract values into a list</span>
+<span class="n">RCN_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">aggregated_data</span><span class="p">[</span><span class="s1">&#39;CommercialN_kg_ha&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">yield_c_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">aggregated_data</span><span class="p">[</span><span class="s1">&#39;CornGrainYield_bupacre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">yield_s_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">aggregated_data</span><span class="p">[</span><span class="s1">&#39;SoybeansYield_bupacre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="c1"># Check for NaN values in any of the arrays</span>
+<span class="n">has_nan_RCN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">RCN_array</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+<span class="n">has_nan_yield_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">yield_c_array</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+<span class="n">has_nan_yield_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">yield_s_array</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+
+<span class="c1"># Combine the results to see if any array has NaN values</span>
+<span class="n">has_nan_any</span> <span class="o">=</span> <span class="n">has_nan_RCN</span> <span class="ow">or</span> <span class="n">has_nan_yield_c</span> <span class="ow">or</span> <span class="n">has_nan_yield_s</span>
+
+<span class="k">if</span> <span class="n">has_nan_any</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> At least one of the arrays contains NaN values.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">has_nan_RCN</span><span class="p">:</span>
+                <span class="n">RCN_array</span> <span class="o">=</span> <span class="n">fill_nan</span><span class="p">(</span><span class="n">RCN_array</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">has_nan_yield_c</span><span class="p">:</span>
+                <span class="n">yield_c_array</span> <span class="o">=</span> <span class="n">fill_nan</span><span class="p">(</span><span class="n">yield_c_array</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">has_nan_yield_s</span><span class="p">:</span>
+                <span class="n">yield_s_array</span> <span class="o">=</span> <span class="n">fill_nan</span><span class="p">(</span><span class="n">yield_s_array</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="neural-network">
+<h2>Neural network<a class="headerlink" href="#neural-network" title="Link to this heading"></a></h2>
+<p>We can now train the neural network and plot the data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Training set size:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">RCN_array</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">RCN_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">yield_c_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">plot of the data</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">RCN_array</span><span class="p">)</span>
+<span class="n">sorted_yield</span> <span class="o">=</span> <span class="n">yield_c_array</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">]</span>
+<span class="n">sorted_RCN</span> <span class="o">=</span> <span class="n">RCN_array</span><span class="p">[</span><span class="n">sorted_indices</span><span class="p">]</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">80</span><span class="p">,</span> <span class="mi">220</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">220</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sorted_RCN</span><span class="p">,</span> <span class="n">sorted_yield</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>  <span class="c1"># Plot x and y using a line and markers</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;RCN&#39;</span><span class="p">)</span>  <span class="c1"># Add x-axis label</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;corn yield&#39;</span><span class="p">)</span>  <span class="c1"># Add y-axis label</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Add gridlines</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>  <span class="c1"># Display the plot</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">plot of the NN approximate</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">NN_test_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">NN_test_x</span> <span class="o">=</span> <span class="n">x_transform</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">NN_test_x</span><span class="p">)</span>
+<span class="n">NN_test_y</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">NN_test_x</span><span class="p">)</span>
+<span class="n">NN_test_x</span> <span class="o">=</span> <span class="n">x_transform</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">NN_test_x</span><span class="p">)</span>
+<span class="n">NN_test_y</span> <span class="o">=</span> <span class="n">y_transform</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">NN_test_y</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">80</span><span class="p">,</span> <span class="mi">220</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">80</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">160</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">220</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">NN_test_x</span><span class="p">,</span> <span class="n">NN_test_y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>  <span class="c1"># Plot x and y using a line and markers</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;NN Test&#39;</span><span class="p">)</span>  <span class="c1"># Add a title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;RCN&#39;</span><span class="p">)</span>  <span class="c1"># Add x-axis label</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;corn yield&#39;</span><span class="p">)</span>  <span class="c1"># Add y-axis label</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Add gridlines</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>  <span class="c1"># Display the plot</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">User RCN Input</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="n">user_RCN</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Amount of commercial Nitrogen (kg/ha) : &quot;</span><span class="p">))</span>
+
+<span class="k">while</span> <span class="n">user_RCN</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">RCN_array</span><span class="p">)</span> <span class="ow">or</span> <span class="n">user_RCN</span> <span class="o">&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">RCN_array</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Select between </span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="n">RCN_array</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">RCN_array</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">user_RCN</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Amount of commercial Nitrogen (kg/ha) : &quot;</span><span class="p">))</span>
+
+
+<span class="n">user_RCN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">user_RCN</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">user_RCN</span> <span class="o">=</span> <span class="n">x_transform</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">user_RCN</span><span class="p">)</span>
+
+<span class="n">user_yield</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">user_RCN</span><span class="p">)</span>
+<span class="n">user_yield</span> <span class="o">=</span> <span class="n">y_transform</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">user_yield</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Approximated corn yield: </span><span class="si">{</span><span class="n">user_yield</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> bu/acre&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting_data.html" class="btn btn-neutral float-left" title="Getting data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="visualization.html" class="btn btn-neutral float-right" title="Visualization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, CODE Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
